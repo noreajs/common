@@ -1,0 +1,24 @@
+{
+  "name": "@noreajs/common",
+  "version": "1.0.0",
+  "description": "Norea.Js Common tool library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"No test specified\\\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noreajs/common.git"
+  },
+  "keywords": [
+    "noreajs",
+    "common",
+    "tool"
+  ],
+  "author": "Arnold LAMBOU",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noreajs/common/issues"
+  },
+  "homepage": "https://github.com/noreajs/common#readme"
+}
