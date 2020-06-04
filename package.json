@@ -3,10 +3,9 @@
   "version": "1.0.1-0",
   "description": "Norea.Js Common tool library",
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
     "build": "tsc",
