@@ -9,4 +9,5 @@ export {
   readNestedProperty,
   removeAllWhiteSpaces,
   replaceAllMatch,
+  checkRequiredKeys
 } from "./Utils";

@@ -133,3 +133,19 @@ export const isLocaleValid = (locale?: string) => {
     return false;
   }
 };
+
+/**
+ * Check required keys
+ * @param attrs object attributes
+ * @param target object
+ */
+export function checkRequiredKeys<T, K = keyof T>(attrs: K[], target: T): K[] {
+  const r: K[] = [];
+  for (const attr of attrs) {
+    const element = (target as any)[attr];
+    if (!element || (typeof element === "string" && element.length === 0)) {
+      r.push(attr);
+    }
+  }
+  return r;
+}

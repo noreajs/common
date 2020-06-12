@@ -9,7 +9,8 @@ import {
   readNestedProperty,
   extractLanguageTag,
   isLocaleValid,
-} from "..";
+  checkRequiredKeys,
+} from "../lib/Utils";
 
 /**
  * isFilled
@@ -148,5 +149,15 @@ describe("isLocaleValid", function () {
   });
   it("should return false when the locale is not well separated", function () {
     equal(isLocaleValid("en_b"), false);
+  });
+});
+
+/**
+ * checkRequiredKeys
+ */
+describe("checkRequiredKeys", function () {
+  it("should return uninitialized attributes list", function () {
+    const r = checkRequiredKeys(["a", "b", "c"], { a: "filled" });
+    equal(JSON.stringify(r), JSON.stringify(["b", "c"]));
   });
 });
