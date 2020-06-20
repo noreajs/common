@@ -11,6 +11,7 @@ import {
   isLocaleValid,
   checkRequiredKeys,
 } from "../lib/Utils";
+import Arr from "../lib/Arr";
 
 /**
  * isFilled
@@ -161,3 +162,4 @@ describe("checkRequiredKeys", function () {
     equal(JSON.stringify(r), JSON.stringify(["b", "c"]));
   });
 });
+

@@ -9,5 +9,7 @@ export {
   readNestedProperty,
   removeAllWhiteSpaces,
   replaceAllMatch,
-  checkRequiredKeys
+  checkRequiredKeys,
 } from "./Utils";
+export { default as Obj } from "./Obj";
+export { default as Arr } from "./Arr";

@@ -25,6 +25,8 @@ export const forceNumber = (value: any): number => {
 
 /**
  * Assign nested property in object
+ * 
+ * @deprecated use Obj.assignNestedProperty instead
  *
  * @param obj object
  * @param keyPath key path list
@@ -74,6 +76,9 @@ export const replaceAllMatch = (
 
 /**
  * Return a value of a nested property (last key in the given path)
+ * 
+ * @deprecated use Obj.readNestedProperty instead
+ * 
  * @param obj object
  * @param keyPath key path list
  */
@@ -138,6 +143,7 @@ export const isLocaleValid = (locale?: string) => {
  * Check required keys
  * @param attrs object attributes
  * @param target object
+ * @deprecated use Obj.missingKeys instead
  */
 export function checkRequiredKeys<T, K = keyof T>(attrs: K[], target: T): K[] {
   const r: K[] = [];

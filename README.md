@@ -4,17 +4,17 @@ The package include many functions that are used by the Norea.Js itself. Feel fr
 
 ## Arrays & Objects
 
-### assignNestedProperty
+### Obj.assignNestedProperty
 
-The _assignNestedProperty_ method allows you to inject an attribute into an object no matter the level of nesting.
+The _Obj.assignNestedProperty_ method allows you to inject an attribute into an object no matter the level of nesting.
 
-#### Method import
+Method import
 
 ```typescript
-import { assignNestedProperty } from "@noreajs/common";
+import { Obj } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const assignNestedProperty: (
@@ -24,13 +24,13 @@ const assignNestedProperty: (
 ) => void;
 ```
 
-#### Method parameters
+Method parameters
 
 - **obj**: object into which you want to inject the data
 - **keyPath**: table containing in order each step of the path to the attribute
 - **value**: value to assign
 
-#### Example
+Example
 
 ```typescript
 const user = {
@@ -38,7 +38,7 @@ const user = {
   email: "john-conor@sky.net",
 };
 
-assignNestedProperty(user, ["country", "city", "name"], "Newyork");
+Obj.assignNestedProperty(user, ["country", "city", "name"], "Newyork");
 
 // New user value:
 // {
@@ -52,28 +52,28 @@ assignNestedProperty(user, ["country", "city", "name"], "Newyork");
 // }
 ```
 
-### readNestedProperty
+### Obj.readNestedProperty
 
-The _readNestedProperty_ method help you to read an attribute into an object no matter the level of nesting.
+The _Obj.readNestedProperty_ method help you to read an attribute into an object no matter the level of nesting.
 
-#### Method import
+Method import
 
 ```typescript
-import { readNestedProperty } from "@noreajs/common";
+import { Obj } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const readNestedProperty: (obj: any, keyPath: Array<string>) => any;
 ```
 
-#### Method parameters
+Method parameters
 
 - **obj**: the object that contains the valu
 - **keyPath**: table containing in order each step of the path to the attribute
 
-#### Example
+Example
 
 ```typescript
 const user = {
@@ -87,37 +87,37 @@ const user = {
 	}
 }
 
-const cityName = readNestedProperty(user, ["country", "city", "name"]);
+const cityName = Obj.readNestedProperty(user, ["country", "city", "name"]);
 // Newyork
 
 ```
 
-### checkRequiredKeys
+### Obj.missingKeys
 
-The _checkRequiredKeys_ method returns the attributes of the given array that have not been filled in and the target object.
+The _Arr.missingKeys_ method returns the attributes of the given array that have not been filled in and the target object.
 
-#### Method import
+Method import
 
 ```typescript
-import { checkRequiredKeys } from "@noreajs/common";
+import { Obj } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 // typescript
-function checkRequiredKeys<T, K = keyof T>(attrs: K[], target: T): K[];
+function missingKeys<T, K = keyof T>(keys: K[], target: T): K[]
 
 // javascript
-function checkRequiredKeys(attrs, target);
+function missingKeys(attrs, target);
 ```
 
-#### Method parameters
+Method parameters
 
 - **attrs**: table of _target_'s required attributes
 - **target**: object
 
-#### Example
+Example
 
 ```typescript
 const user = {
@@ -126,12 +126,122 @@ const user = {
   jobTitle: "Big Food personal coach",
 };
 
-const keys = checkRequiredKeys(["name", "nickname"], user);
+const keys = Obj.missingKeys(["name", "nickname"], user);
 // []
 
-const keys = checkRequiredKeys(["birthdate", "birthplace", "name"], user);
+const keys = Obj.missingKeys(["birthdate", "birthplace", "name"], user);
 // ["birthdate", "birthplace"]
 ```
+
+### Obj.pluck
+
+The _Arr.pluck_ method extract a list of property values.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+// typescript
+function pluck<T>(array: T[], key: keyof T): any[]
+
+// javascript
+function pluck(array, key);
+```
+
+Method parameters
+
+- **array**: array of object
+- **key**: key to be extracted
+
+Example
+
+```typescript
+const users = [
+    {
+        id: 1,
+        name: "Lambou",
+    },
+    {
+        id: 2,
+        name: "Arnold"
+    }
+];
+
+const keys = Obj.pluck(users, "id");
+// [1, 2]
+
+const keys = Obj.pluck(users, "name");
+// ["Lambou", "Arnold"]
+```
+
+### Arr.includes
+
+The _Arr.includes_ method `true` if the array includes the given value and `false` otherwise. 
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+function includes(array: string[], value: string): boolean;
+```
+
+Method parameters
+
+- **array**: array of string
+- **value**: value
+
+Examples
+
+```typescript
+const r = Arr.includes(["a", "b"], "c");
+// false
+
+const r = Arr.includes(["a", "b"], "a");
+// true
+```
+
+### Arr.missing
+
+The _Arr.missing_ method returns items in array **a** missing in array **b**. 
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+function missing(a: string[], b: string[]): boolean;
+```
+
+Method parameters
+
+- **a**: array of string
+- **b**: array of string
+
+Examples
+
+```typescript
+const r = Arr.missing(["a", "b"], ["c", "a"]);
+// ["b"]
+
+const r = Arr.missing(["a", "b"], ["a", "b"]);
+// []
+```
+
+### 
 
 ## Strings & Numbers
 
@@ -139,23 +249,23 @@ const keys = checkRequiredKeys(["birthdate", "birthplace", "name"], user);
 
 The _extractLanguageTag_ method help you to extract language tag in a locale string.
 
-#### Method import
+Method import
 
 ```typescript
 import { extractLanguageTag } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const extractLanguageTag: (value: string | undefined) => string;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: locale value
 
-#### Examples
+Examples
 
 ```typescript
 const tag = extractLanguageTag("en-US");
@@ -172,23 +282,23 @@ const tag = extractLanguageTag("en");
 
 The _forceNumber_ method returns the numeric value of the given object and zero if the given object is not a number
 
-#### Method import
+Method import
 
 ```typescript
 import { forceNumber } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const forceNumber: (value: any) => number;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: potential number
 
-#### Examples
+Examples
 
 ```typescript
 const num = forceNumber("100");
@@ -208,23 +318,23 @@ const num = forceNumber("454i");
 
 The _isFilled_ method return **true** the given value is null or undefined.
 
-#### Method import
+Method import
 
 ```typescript
 import { isFilled } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const isFilled: (value: any) => boolean;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: value to check
 
-#### Examples
+Examples
 
 ```typescript
 var a = null;
@@ -252,23 +362,23 @@ isFilled(d);
 
 The _isLocaleValid_ method return **true** the given value is a valid locale string.
 
-#### Method import
+Method import
 
 ```typescript
 import { isLocaleValid } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const isLocaleValid: (locale?: string | undefined) => boolean;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: locale string
 
-#### Examples
+Examples
 
 ```typescript
 var a = null;
@@ -297,23 +407,23 @@ isLocaleValid(e);
 
 The _isQueryParamFilled_ method return **true** the given value is null or undefined and length > 0.
 
-#### Method import
+Method import
 
 ```typescript
 import { isQueryParamFilled } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const isQueryParamFilled: (value: any) => boolean;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: value to check
 
-#### Examples
+Examples
 
 ```typescript
 var a = null;
@@ -338,13 +448,13 @@ isQueryParamFilled(d);
 
 The _removeAllWhiteSpaces_ method remove all white spaces in string
 
-#### Method import
+Method import
 
 ```typescript
 import { removeAllWhiteSpaces } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const removeAllWhiteSpaces: (
@@ -353,12 +463,12 @@ const removeAllWhiteSpaces: (
 ) => string;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: given string
 - **replacement**: optional replacement value
 
-#### Examples
+Examples
 
 ```typescript
 const value = removeAllWhiteSpaces("100 50");
@@ -375,13 +485,13 @@ const value = removeAllWhiteSpaces("family member", " and ");
 
 The _replaceAllMatch_ method replace all occurences of a searched string in another string.
 
-#### Method import
+Method import
 
 ```typescript
 import { replaceAllMatch } from "@noreajs/common";
 ```
 
-#### Method definition
+Method definition
 
 ```typescript
 const replaceAllMatch: (
@@ -391,13 +501,13 @@ const replaceAllMatch: (
 ) => string;
 ```
 
-#### Method parameters
+Method parameters
 
 - **value**: given string
 - **search**: regular expression
 - **replacement**: replacement value
 
-#### Examples
+Examples
 
 ```typescript
 const num = replaceAllMatch("100", /0/g, "1");
