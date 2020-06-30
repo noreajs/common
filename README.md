@@ -42,6 +42,75 @@ const value = Obj.isObject({});
 
 
 
+### Obj.extend
+
+The _Obj.extend_ method allows you to extend an object by :
+
+- editing some values via filters
+- omitting some keys
+- adding prefix or suffix to key
+- adding additional data.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+Obj.extend<T>(params: {
+    data: any;
+    filters?: {
+        [key: string]: ((value: any) => any)[];
+    } | undefined;
+    keyPrefix?: string | undefined;
+    keySuffix?: string | undefined;
+    omits?: (keyof T)[] | undefined;
+    additional?: {
+        [key: string]: any;
+    } | undefined;
+}): any
+```
+
+Method parameters
+
+- **params**: Parameters
+  - **data**: object to be extended
+  - **keyPrefix**: string to be added at the beginning of each key
+  - **keySuffix**: string to be added at the end of each key
+  - **filters**: To be applied on some key's value
+  - **omits**: array of key of data to be omitted while extending.
+
+Example
+
+```typescript
+const data = {
+    first_name: "Arnold",
+    middle_name: "langouo",
+    last_name: "LAMBOU"
+};
+
+const extended = Obj.extend({
+    data: data,
+    keyPrefix: "person.",
+    filters: {
+        last_name: [
+            (value) => {
+                return `Mr ${value}`;
+            }
+        ]
+    },
+    omits: ["middle_name"]
+});
+
+// {
+//     "person.first_name": "Arnold",
+//     "person.last_name": "Mr LAMBOU"
+// }
+```
+
 ### Obj.flatten
 
 The _Obj.flatten_ method allows you to flatten an object.
@@ -93,8 +162,6 @@ const flattened = Obj.flatten({
 //     "world.country.region.city.block": "Troy"
 // }
 ```
-
-
 
 ### Obj.assignNestedProperty
 
