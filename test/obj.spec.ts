@@ -119,3 +119,86 @@ describe("Obj.pluckNested", function () {
     equal(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
   });
 });
+
+/**
+ * Object.extend
+ */
+describe("Obj.extend", function () {
+  it("should return an object with custom prefix on key", function () {
+    const data = {
+      name: "Arnold",
+      nickname: "Mortel",
+    };
+
+    const extended = Obj.extend({
+      data: data,
+      keyPrefix: "the.",
+      filters: {
+        name: [
+          function (value) {
+            return `Hello ${value}`;
+          },
+          function (value) {
+            return `${value}!`;
+          },
+        ],
+      },
+      omits: ["nickname"],
+    });
+
+    equal(
+      JSON.stringify(extended),
+      JSON.stringify({ "the.name": "Hello Arnold!" })
+    );
+  });
+});
+
+/**
+ * Object.flatten
+ */
+describe("Obj.flatten", function () {
+  it("should return an object with flatten key", function () {
+    const data = {
+      boss: "Big Playa",
+      name: {
+        nickname: {
+          in: {
+            the: {
+              hood: "Yes",
+            },
+          },
+        },
+      },
+    };
+
+    const flattened = Obj.flatten({
+      data: data,
+      prefix: "hey.",
+      suffix: ".man",
+      omits: ["boss"],
+    });
+
+    equal(
+      JSON.stringify(flattened),
+      JSON.stringify({ "hey.name.nickname.in.the.hood.man": "Yes" })
+    );
+  });
+});
+
+/**
+ * Object.isObject
+ */
+describe("Obj.isObject", function () {
+  it("should return false when given value equal to undefined", function () {
+    equal(Obj.isObject(undefined), false);
+  });
+  it("should return false when given value equal to null", function () {
+    equal(Obj.isObject(null), false);
+  });
+  it("should return false when given value is an array", function () {
+    equal(Obj.isObject([]), false);
+  });
+  it("should return true when given value is an object", function () {
+    equal(Obj.isObject({}), true);
+  });
+});

@@ -4,6 +4,98 @@ The package include many functions that are used by the Norea.Js itself. Feel fr
 
 ## Arrays & Objects
 
+### Obj.isObject
+
+The _Obj.isObject_ method allows you to check if the given value is an object or not.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+Obj.isObject(data: any): boolean;
+```
+
+Method parameters
+
+- **data**: Value to be checked
+
+Example
+
+```typescript
+const value = Obj.isObject(undefined);
+// false
+
+const value = Obj.isObject(null);
+// false
+
+const value = Obj.isObject([]);
+// false
+
+const value = Obj.isObject({});
+// true
+```
+
+
+
+### Obj.flatten
+
+The _Obj.flatten_ method allows you to flatten an object.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+Obj.flatten: (params: {
+    data: object;
+    prefix?: string;
+    suffix?: string;
+    omits?: string[];
+}) => any
+```
+
+Method parameters
+
+- **params**: Parameters
+  - **data**: object to be flattened
+  - **prefix**: string to be added at the beginning of each key
+  - **suffix**: string to be added at the end of each key
+  - **omits**: array of key to be omitted while flattening the data. You can path (nested keys separated by dots).
+
+Example
+
+```typescript
+const data = {
+    country: {
+        region: {
+            city: {
+                block: "Troy"
+            }
+        }
+    }
+};
+
+const flattened = Obj.flatten({
+    data: data,
+    prefix: "world."
+});
+
+// {
+//     "world.country.region.city.block": "Troy"
+// }
+```
+
+
+
 ### Obj.assignNestedProperty
 
 The _Obj.assignNestedProperty_ method allows you to inject an attribute into an object no matter the level of nesting.
@@ -172,12 +264,74 @@ const users = [
     }
 ];
 
-const keys = Obj.pluck(users, "id");
+const values = Obj.pluck(users, "id");
 // [1, 2]
 
-const keys = Obj.pluck(users, "name");
+const values = Obj.pluck(users, "name");
 // ["Lambou", "Arnold"]
 ```
+
+### Obj.pluckNested
+
+The _Arr.pluckNested_ method extract a list of property values.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+// typescript
+function pluckNested(array: any[], keyPath: string | string[]): any[]
+
+// javascript
+function pluckNested(array, keyPath);
+```
+
+Method parameters
+
+- **array**: array of object
+- **keyPath**: key path of property to be extracted
+
+Example
+
+```typescript
+const users = [
+    {
+        id: 1,
+        name: "Lambou",
+        info: {
+            birth: "27-03-1995",
+            birthplace: "Bangangté"
+        }
+    },
+    {
+        id: 2,
+        name: "Arnold",
+        info: {
+            birth: "27-03-2000",
+            birthplace: "Monaco"
+        }
+    }
+];
+
+const values = Obj.pluckNested(users, "id");
+// [1, 2]
+
+const values = Obj.pluckNested(users, "name");
+// ["Lambou", "Arnold"]
+
+const values = Obj.pluckNested(users, "info.birth");
+// ["27-03-1995", "27-03-2000"]
+
+const values = Obj.pluckNested(users, ["info", "birthplace"]);
+// ["Bangangté", "Monaco"]
+```
+
+### 
 
 ### Arr.includes
 
@@ -192,7 +346,7 @@ import { Arr } from "@noreajs/common";
 Method definition
 
 ```typescript
-function includes(array: string[], value: string): boolean;
+function includes(array: (string | number)[], value: string | number): boolean;
 ```
 
 Method parameters
@@ -223,7 +377,7 @@ import { Arr } from "@noreajs/common";
 Method definition
 
 ```typescript
-function missing(a: string[], b: string[]): boolean;
+function missing(a: (string | number)[], b: (string | number)[]): (string | number)[];
 ```
 
 Method parameters

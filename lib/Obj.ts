@@ -87,6 +87,152 @@ class Obj {
     }
     return r;
   }
+
+  /**
+   * Extend given data
+   * @param params parameters
+   */
+  static extend<T>(params: {
+    /**
+     * Values from form
+     */
+    data: any;
+
+    /**
+     * Filter to be applied to values
+     */
+    filters?: {
+      [key: string]: Array<(value: any) => any>;
+    };
+
+    /**
+     * Prefix to be applied before each key
+     */
+    keyPrefix?: string;
+
+    /**
+     * Suffix to be applied after each key
+     */
+    keySuffix?: string;
+
+    /**
+     * Values to be omitted
+     */
+    omits?: Array<keyof T>;
+
+    additional?: {
+      [key: string]: any;
+    };
+  }) {
+    let data: any = {};
+    let keyRealPrefix = params.keyPrefix ?? "";
+    let keyRealSuffix = params.keySuffix ?? "";
+
+    for (const key in params.data) {
+      if (params.omits && params.omits.find((k) => k === key)) {
+        continue;
+      }
+
+      if (params.data.hasOwnProperty(key)) {
+        let value = params.data[key];
+
+        /**
+         * Apply filter
+         */
+        if (params.filters) {
+          const filterKey = Object.keys(params.filters).find(
+            (item) => item === key
+          );
+          if (filterKey) {
+            for (const filter of params.filters[filterKey]) {
+              value = filter(value);
+            }
+          }
+        }
+
+        if (value) {
+          // inject value
+          data[`${keyRealPrefix}${key}${keyRealSuffix}`] = value;
+        }
+      }
+    }
+
+    /**
+     * Inject additional data
+     */
+    if (params.additional) {
+      data = {
+        ...data,
+        ...params.additional,
+      };
+    }
+
+    return data;
+  }
+
+  /**
+   * Flatten an object
+   * @param params parameters
+   */
+  static flatten = (params: {
+    /**
+     * object to flatten
+     */
+    data: object;
+
+    /**
+     * String to be added to each key
+     */
+    prefix?: string;
+
+    /**
+     * String to be added at the end of each key
+     */
+    suffix?: string;
+
+    /**
+     * Values to be omitted
+     */
+    omits?: string[];
+  }) => {
+    let realPrefix = params.prefix ?? "";
+    let realSuffix = params.suffix ?? "";
+    let result: any = {};
+    for (const key in params.data) {
+      if (params.data.hasOwnProperty(key)) {
+        const element = (params.data as any)[key];
+        if (Obj.isObject(element)) {
+          result = {
+            ...result,
+            ...Obj.flatten({
+              data: element,
+              prefix: `${realPrefix}${key}.`,
+              suffix: realSuffix,
+            }),
+          };
+        } else {
+          const newKey = `${realPrefix}${key}${realSuffix}`;
+          if (
+            !params.omits ||
+            !params.omits.find(
+              (item) => `${realPrefix}${item}${realSuffix}` === newKey
+            )
+          ) {
+            result[`${realPrefix}${key}${realSuffix}`] = element;
+          }
+        }
+      }
+    }
+    return result;
+  };
+
+  /**
+   * check if a value is an Object
+   * @param data object
+   */
+  static isObject(data: any) {
+    return !Array.isArray(data) && typeof data === "object" && data !== null;
+  }
 }
 
 export default Obj;
