@@ -251,9 +251,56 @@ const cityName = Obj.readNestedProperty(user, ["country", "city", "name"]);
 
 ```
 
+### Obj.merge
+
+The _Obj.merge_ method merges two objects by prioritizing either the attributes of the object on the left or the attributes of the object on the right.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+// typescript
+function merge(left: any, right: any, priority?: "left" | "right"): any
+
+// javascript
+function merge(left, right, priority);
+```
+
+Method parameters
+
+- **left**: left object
+- **right**: right object
+- **priority**: *left* (default value) or *right*
+
+Example
+
+```typescript
+const obj = {
+    id: 10,
+    name: "john",
+};
+
+const obj2 = {
+    name: "henry",
+};
+
+const merged = Obj.merge(obj, obj2);
+// { id: 10, name: "john" }
+
+const mergedWithRightPriority = Obj.merge(obj, obj2, "right");
+// { id: 10, name: "henry" }
+```
+
+### 
+
 ### Obj.missingKeys
 
-The _Arr.missingKeys_ method returns the attributes of the given array that have not been filled in and the target object.
+The _Obj.missingKeys_ method returns the attributes of the given array that have not been filled in and the target object.
 
 Method import
 
@@ -294,7 +341,7 @@ const keys = Obj.missingKeys(["birthdate", "birthplace", "name"], user);
 
 ### Obj.pluck
 
-The _Arr.pluck_ method extract a list of property values.
+The _Obj.pluck_ method extract a list of property values.
 
 Method import
 
@@ -340,7 +387,7 @@ const values = Obj.pluck(users, "name");
 
 ### Obj.pluckNested
 
-The _Arr.pluckNested_ method extract a list of property values.
+The _Obj.pluckNested_ method extract a list of property values.
 
 Method import
 

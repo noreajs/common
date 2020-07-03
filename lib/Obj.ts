@@ -233,6 +233,37 @@ class Obj {
   static isObject(data: any) {
     return !Array.isArray(data) && typeof data === "object" && data !== null;
   }
+
+  /**
+   * Merge two objects
+   * @param left left object
+   * @param right right object
+   * @param priority left or right
+   */
+  static merge(left: any, right: any, priority: "left" | "right" = "left") {
+    const mergedKeys: string[] = [];
+
+    for (const key of [...Object.keys(left), ...Object.keys(right)]) {
+      if (!mergedKeys.includes(key)) {
+        mergedKeys.push(key);
+      }
+    }
+
+    const merged: any = {};
+
+    for (const key of mergedKeys) {
+      switch (priority) {
+        case "left":
+          merged[key] = left[key] ?? right[key];
+          break;
+        case "right":
+          merged[key] = right[key] ?? left[key];
+          break;
+      }
+    }
+
+    return merged;
+  }
 }
 
 export default Obj;

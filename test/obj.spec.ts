@@ -43,7 +43,7 @@ describe("Obj.missingKeys", function () {
 });
 
 /**
- * Object.pluck
+ * Obj.pluck
  */
 describe("Obj.pluck", function () {
   it("should return the list of extracted property values", function () {
@@ -66,7 +66,7 @@ describe("Obj.pluck", function () {
 });
 
 /**
- * Object.pluckNested
+ * Obj.pluckNested
  */
 describe("Obj.pluckNested", function () {
   it("should return the list of extracted nested property values (dot notation)", function () {
@@ -121,7 +121,7 @@ describe("Obj.pluckNested", function () {
 });
 
 /**
- * Object.extend
+ * Obj.extend
  */
 describe("Obj.extend", function () {
   it("should return an object with custom prefix on key", function () {
@@ -154,7 +154,7 @@ describe("Obj.extend", function () {
 });
 
 /**
- * Object.flatten
+ * Obj.flatten
  */
 describe("Obj.flatten", function () {
   it("should return an object with flatten key", function () {
@@ -186,7 +186,7 @@ describe("Obj.flatten", function () {
 });
 
 /**
- * Object.isObject
+ * Obj.isObject
  */
 describe("Obj.isObject", function () {
   it("should return false when given value equal to undefined", function () {
@@ -200,5 +200,42 @@ describe("Obj.isObject", function () {
   });
   it("should return true when given value is an object", function () {
     equal(Obj.isObject({}), true);
+  });
+});
+
+/**
+ * Obj.merge
+ */
+describe("Obj.merge", function () {
+  it("should merge the two object with priority left", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+    };
+
+    const obj2 = {
+      name: "henry",
+    };
+
+    equal(
+      JSON.stringify(Obj.merge(obj, obj2)),
+      JSON.stringify({ id: 10, name: "john" })
+    );
+  });
+
+  it("should merge the two object with priority right", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+    };
+
+    const obj2 = {
+      name: "henry",
+    };
+
+    equal(
+      JSON.stringify(Obj.merge(obj, obj2, "right")),
+      JSON.stringify({ id: 10, name: "henry" })
+    );
   });
 });
