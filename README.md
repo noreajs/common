@@ -2,6 +2,12 @@
 
 The package include many functions that are used by the Norea.Js itself. Feel free to use them in your own applications or projects if you find them useful. This package does not have any dependencies.
 
+[![Version](https://img.shields.io/npm/v/@noreajs/common.svg)](https://npmjs.org/package/@noreajs/common)
+
+[![Downloads/week](https://img.shields.io/npm/dw/@noreajs/common.svg)](https://npmjs.org/package/@noreajs/common)
+
+[![License](https://img.shields.io/npm/l/@noreajs/cli.svg)](https://github.com/noreajs/common/blob/master/package.json)
+
 ## Arrays & Objects
 
 ### Obj.isObject
@@ -167,7 +173,7 @@ const flattened = Obj.flatten({
 
 ### Obj.reverseFlatten
 
-The _Obj.reverseFlatten_ method reverses the flattening process.
+The _Obj.reverseFlatten_ method reverses the flattening process on an object.
 
 Method import
 
@@ -178,7 +184,7 @@ import { Obj } from "@noreajs/common";
 Method definition
 
 ```typescript
-Obj.flatten: (params: {
+Obj.reverseFlatten: (params: {
     data: object;
     prefix?: string;
     suffix?: string;
@@ -194,7 +200,7 @@ Method parameters
   - **prefix**: string to be added at the beginning of each key
   - **suffix**: string to be added at the end of each key
   - **omits**: array of key to be omitted while flattening the data. You can path (nested keys separated by dots).
-  - **separator**: string or regulation expression to split keys
+  - **separator**: string or regulation expression to split keys. the default value is `.`
 
 Example
 
