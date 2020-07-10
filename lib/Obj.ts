@@ -181,6 +181,12 @@ class Obj {
     data: object;
 
     /**
+     * Separator
+     * @default .
+     */
+    separator?: string;
+
+    /**
      * String to be added to each key
      */
     prefix?: string;
@@ -195,6 +201,7 @@ class Obj {
      */
     omits?: string[];
   }) => {
+    let separator = params.separator ?? ".";
     let realPrefix = params.prefix ?? "";
     let realSuffix = params.suffix ?? "";
     let result: any = {};
@@ -206,7 +213,7 @@ class Obj {
             ...result,
             ...Obj.flatten({
               data: element,
-              prefix: `${realPrefix}${key}.`,
+              prefix: `${realPrefix}${key}${separator}`,
               suffix: realSuffix,
             }),
           };
@@ -225,6 +232,76 @@ class Obj {
     }
     return result;
   };
+
+  /**
+   * Reverse a flattened object
+   * @param params parameters
+   */
+  static reverseFlatten(params: {
+    /**
+     * object to flatten
+     */
+    flattened: object;
+
+    /**
+     * Keys separator
+     * @default .
+     */
+    separator?: string | RegExp;
+
+    /**
+     * String to be added to each key
+     */
+    prefix?: string;
+
+    /**
+     * String to be added at the end of each key
+     */
+    suffix?: string;
+
+    /**
+     * Values to be omitted
+     */
+    omits?: string[];
+  }) {
+    const separator = params.separator ?? ".";
+    const result: any = {};
+
+    for (const key in params.flattened) {
+      if (
+        params.flattened.hasOwnProperty(key) &&
+        (!params.omits || !params.omits.includes(key))
+      ) {
+        // initialize original key
+        let originalKey = key;
+
+        // remove suffix if exist
+        if (params.suffix) {
+          originalKey = originalKey.substr(
+            0,
+            key.length - params.suffix.length + 1
+          );
+        }
+
+        // remove preffix if exist
+        if (params.prefix) {
+          originalKey = originalKey.substring(
+            params.prefix.length,
+            originalKey.length - 1
+          );
+        }
+
+        if (!params.omits || !params.omits.includes(originalKey)) {
+          Obj.assignNestedProperty(
+            result,
+            originalKey.split(separator),
+            (params.flattened as any)[key]
+          );
+        }
+      }
+    }
+    return result;
+  }
 
   /**
    * check if a value is an Object
@@ -263,6 +340,65 @@ class Obj {
     }
 
     return merged;
+  }
+
+  /**
+   *
+   * @param params parameters
+   */
+  static mergeNested(params: {
+    /**
+     * Left object
+     */
+    left: any;
+
+    /**
+     * Right object
+     */
+    right: any;
+
+    /**
+     * Merge priority
+     */
+    priority?: "left" | "right";
+
+    /**
+     * Separator to flatten objects
+     */
+    separator?: string;
+  }) {
+    const priority = params.priority ?? "left";
+    const separator = params.separator ?? "----";
+    const mergedKeys: string[] = [];
+    const leftFlattened = Obj.flatten({ data: params.left, separator });
+    const rightFlattened = Obj.flatten({ data: params.right, separator });
+
+    for (const key of [
+      ...Object.keys(leftFlattened),
+      ...Object.keys(rightFlattened),
+    ]) {
+      if (!mergedKeys.includes(key)) {
+        mergedKeys.push(key);
+      }
+    }
+
+    const merged: any = {};
+
+    for (const key of mergedKeys) {
+      switch (priority) {
+        case "left":
+          merged[key] = leftFlattened[key] ?? rightFlattened[key];
+          break;
+        case "right":
+          merged[key] = rightFlattened[key] ?? leftFlattened[key];
+          break;
+      }
+    }
+
+    return Obj.reverseFlatten({
+      flattened: merged,
+      separator,
+    });
   }
 }
 

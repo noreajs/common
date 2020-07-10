@@ -163,6 +163,58 @@ const flattened = Obj.flatten({
 // }
 ```
 
+
+
+### Obj.reverseFlatten
+
+The _Obj.reverseFlatten_ method reverses the flattening process.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+Obj.flatten: (params: {
+    data: object;
+    prefix?: string;
+    suffix?: string;
+    omits?: string[];
+	separator?: string | RegExp
+}) => any
+```
+
+Method parameters
+
+- **params**: Parameters
+  - **data**: object to be flattened
+  - **prefix**: string to be added at the beginning of each key
+  - **suffix**: string to be added at the end of each key
+  - **omits**: array of key to be omitted while flattening the data. You can path (nested keys separated by dots).
+  - **separator**: string or regulation expression to split keys
+
+Example
+
+```typescript
+const flattened = {
+    "world.country.region.city.block": "Troy"
+};
+
+const reversed = Obj.reverseFlatten({
+    data: data,
+    prefix: "world."
+});
+
+// {
+//     country: { region: { city: { block: "Troy"}}}
+// }
+```
+
+
+
 ### Obj.assignNestedProperty
 
 The _Obj.assignNestedProperty_ method allows you to inject an attribute into an object no matter the level of nesting.
@@ -296,7 +348,61 @@ const mergedWithRightPriority = Obj.merge(obj, obj2, "right");
 // { id: 10, name: "henry" }
 ```
 
-### 
+
+
+### Obj.mergeNested
+
+The _Obj.mergeNested_ method merges two objects with nested properties by prioritizing either the attributes of the object on the left or the attributes of the object on the right.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition
+
+```typescript
+// typescript
+function mergeNested(params: {left: any, right: any, priority?: "left" | "right", separator?: string}): any
+
+// javascript
+function mergeNested({left, right, priority, separator});
+```
+
+Method parameters
+
+- **left**: left object
+- **right**: right object
+- **priority**: *left* (default value) or *right*
+- **separator**: given objects are flattened before merged, and this separator is used in order to separate keys. The default value is `----`.
+
+Example
+
+```typescript
+const obj = {
+    id: 10,
+    name: "john",
+	info: {
+		first_name: "john",
+    },
+};
+
+const obj2 = {
+    name: "henry",
+    info: {
+        last_name: "doe",
+    }
+};
+
+const merged = Obj.mergeNested(obj, obj2);
+// { id: 10, name: "john", info: { first_name: "john", last_name: "doe"} }
+
+const mergedWithRightPriority = Obj.merge(obj, obj2, "right");
+// { id: 10, name: "henry", info: { first_name: "john", last_name: "doe"} }
+```
+
+
 
 ### Obj.missingKeys
 

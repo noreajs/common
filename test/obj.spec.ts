@@ -186,6 +186,37 @@ describe("Obj.flatten", function () {
 });
 
 /**
+ * Obj.flatten
+ */
+describe("Obj.reverseFlatten", function () {
+  it("should reverse flatten on an object", function () {
+    const flattened = { "hey.name.nickname.in.the.hood.man": "Yes" };
+
+    const data = Obj.reverseFlatten({
+      flattened,
+      prefix: "hey.",
+      suffix: ".man",
+      omits: ["boss"],
+    });
+
+    equal(
+      JSON.stringify(data),
+      JSON.stringify({
+        name: {
+          nickname: {
+            in: {
+              the: {
+                hood: "Yes",
+              },
+            },
+          },
+        },
+      })
+    );
+  });
+});
+
+/**
  * Obj.isObject
  */
 describe("Obj.isObject", function () {
@@ -207,7 +238,7 @@ describe("Obj.isObject", function () {
  * Obj.merge
  */
 describe("Obj.merge", function () {
-  it("should merge the two object with priority left", function () {
+  it("should merge the two objects with priority left", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -223,7 +254,7 @@ describe("Obj.merge", function () {
     );
   });
 
-  it("should merge the two object with priority right", function () {
+  it("should merge the two objects with priority right", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -236,6 +267,76 @@ describe("Obj.merge", function () {
     equal(
       JSON.stringify(Obj.merge(obj, obj2, "right")),
       JSON.stringify({ id: 10, name: "henry" })
+    );
+  });
+});
+
+/**
+ * Obj.mergeNested
+ */
+describe("Obj.mergeNested", function () {
+  it("should merge the two objects with nested properties and left priority", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+      info: {
+        first_name: "john",
+        last_name: "doe",
+      },
+    };
+
+    const obj2 = {
+      name: "henry",
+      info: {
+        middle_name: "hannah",
+      },
+    };
+
+    equal(
+      JSON.stringify(Obj.mergeNested({ left: obj, right: obj2 })),
+      JSON.stringify({
+        id: 10,
+        name: "john",
+        info: {
+          first_name: "john",
+          last_name: "doe",
+          middle_name: "hannah",
+        },
+      })
+    );
+  });
+
+  it("should merge the two objects with nested properties and right priority", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+      info: {
+        first_name: "john",
+        last_name: "doe",
+        middle_name: "hannah",
+      },
+    };
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: "travas"
+      }
+    };
+
+    equal(
+      JSON.stringify(
+        Obj.mergeNested({ left: obj, right: obj2, priority: "right" })
+      ),
+      JSON.stringify({
+        id: 10,
+        name: "manuella",
+        info: {
+          first_name: "john",
+          last_name: "doe",
+          middle_name: "travas",
+        },
+      })
     );
   });
 });
