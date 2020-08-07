@@ -1,6 +1,6 @@
 {
   "name": "@noreajs/common",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Norea.Js Common tool library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
