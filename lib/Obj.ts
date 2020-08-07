@@ -184,7 +184,7 @@ class Obj {
      * Separator
      * @default .
      */
-    separator?: string;
+    separator?: string | RegExp;
 
     /**
      * String to be added to each key
@@ -343,7 +343,7 @@ class Obj {
   }
 
   /**
-   *
+   * Merge object with nested properties
    * @param params parameters
    */
   static mergeNested(params: {
@@ -399,6 +399,25 @@ class Obj {
       flattened: merged,
       separator,
     });
+  }
+
+  /**
+   * Remove null or undefined properties in an object
+   * @param obj object to clean
+   * @param separator separator for nested properties
+   */
+  static clean(obj: any, separator: string | RegExp = ".") {
+    const r: any = {};
+    const flattened = Obj.flatten({ data: obj, separator: separator });
+    for (const key in flattened) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const element = obj[key];
+        if (element) {
+          Obj.assignNestedProperty(r, key.split(separator), element);
+        }
+      }
+    }
+    return r;
   }
 }
 

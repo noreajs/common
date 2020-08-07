@@ -8,7 +8,7 @@ The package include many functions that are used by the Norea.Js itself. Feel fr
 
 [![License](https://img.shields.io/npm/l/@noreajs/cli.svg)](https://github.com/noreajs/common/blob/master/package.json)
 
-## Arrays & Objects
+## Objects
 
 ### Obj.isObject
 
@@ -557,7 +557,59 @@ const values = Obj.pluckNested(users, ["info", "birthplace"]);
 // ["Bangangté", "Monaco"]
 ```
 
-### 
+### Obj.clean
+
+The _Obj.clean_ method remove null or undefined properties in an object.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition (Typescript)
+
+```typescript
+function clean(obj: any, separator?: string | RegExp): any
+```
+
+Method definition (JavaScript)
+
+```typescript
+function clean(obj, separator): any
+```
+
+Method parameters
+
+- **obj**: object
+- **separator**: separator for nested properties
+
+Example
+
+```typescript
+const data = {
+    id: 10,
+    name: "amina",
+    size: null,
+};
+const r = Obj.clean(data);
+
+// { id: 10, name: "amina" }
+
+const data = {
+    id: 10,
+    name: "amina",
+    size: null,
+    age: undefined,
+};
+const r = Obj.clean(data);
+
+// { id: 10, name: "amina" }
+```
+
+
+
+## Arrays
 
 ### Arr.includes
 
@@ -621,7 +673,147 @@ const r = Arr.missing(["a", "b"], ["a", "b"]);
 // []
 ```
 
-### 
+```typescript
+const r = Arr.includes(["a", "b"], "c");
+// false
+
+const r = Arr.includes(["a", "b"], "a");
+// true
+```
+
+### Arr.unique
+
+The _Arr.unique_ method test the uniqueness of values of an array
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition (Typescript)
+
+```typescript
+function unique<T = any>(arr: Array<T>, keys?: string | keyof T | (string | keyof T)[] | undefined, separator?: string | RegExp): boolean
+```
+
+Method definition (JavaScript)
+
+```js
+function unique(arr, keys, separator): boolean
+```
+
+Method parameters
+
+- **arr**: array
+- **keys**: keys when it is an array of objects
+- **separator**: separator for nested properties - default value " `.`"
+
+Example
+
+```typescript
+const data = [
+      { name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+      { name: "abena", id: 10, size: 24, info: { id: 2, profile: null } },
+      { name: "ateba", id: 10, size: 24, info: { id: 3, profile: null } },
+      { name: "awana", id: 10, size: 24, info: { id: 4, profile: null } },
+];
+const r = Arr.unique(data);
+// true
+
+const data = [
+      { name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+      { name: "ayoho", id: 10, size: 24, info: { id: 2, profile: null } },
+      { name: "ateba", id: 10, size: 24, info: { id: 3, profile: null } },
+      { name: "awana", id: 10, size: 24, info: { id: 4, profile: null } },
+];
+const r = Arr.unique(data, "name");
+// true
+
+const data = [
+      { name: "abena", id: 10, size: 1, info: { id: 1, profile: null } },
+      { name: "ayoho", id: 1, size: 2, info: { id: 1, profile: null } },
+      { name: "ateba", id: 2, size: 3, info: { id: 1, profile: null } },
+      { name: "awana", id: 10, size: 4, info: { id: 1, profile: null } },
+];
+const r = Arr.unique(data, ["name", "id", "size"]);
+// false
+```
+
+### Arr.distinct
+
+The _Arr.distinct_ method eliminates duplicates in a table.
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition (Typescript)
+
+```typescript
+function distinct<T = any>(arr: Array<T>, keys?: string | keyof T | (string | keyof T)[] | undefined, separator?: string | RegExp): T[]
+```
+
+Method definition (JavaScript)
+
+```typescript
+function distinct(arr, keys, separator): any[]
+```
+
+Method parameters
+
+- **arr**: array
+- **keys**: keys when it is an array of objects
+- **separator**: separator for nested properties - default value " `.`"
+
+Examples
+
+```typescript
+const data = [
+      { name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+      { name: "ayoho", id: 10, size: 24, info: { id: 2, profile: null } },
+      { name: "ateba", id: 10, size: 24, info: { id: 3, profile: null } },
+      { name: "awana", id: 10, size: 24, info: { id: 4, profile: null } },
+];
+const r = Arr.distinct(data, "id");
+
+//	[
+//		{ name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+//	]
+
+const data = [
+      { name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+      { name: "abena", id: 10, size: 24, info: { id: 2, profile: null } },
+      { name: "ateba", id: 10, size: 24, info: { id: 3, profile: null } },
+      { name: "awana", id: 10, size: 24, info: { id: 4, profile: null } },
+];
+const r = Arr.distinct(data);
+
+//	[
+//		{ name: "abena", id: 10, size: 24, info: { id: 1, profile: null } },
+//		{ name: "abena", id: 10, size: 24, info: { id: 2, profile: null } },
+//		{ name: "ateba", id: 10, size: 24, info: { id: 3, profile: null } },
+//		{ name: "awana", id: 10, size: 24, info: { id: 4, profile: null } },
+//	]
+
+const data = [
+      { name: "abena", id: 10, size: 1, info: { id: 1, profile: null } },
+      { name: "ayoho", id: 1, size: 2, info: { id: 1, profile: null } },
+      { name: "ateba", id: 2, size: 3, info: { id: 1, profile: null } },
+      { name: "awana", id: 10, size: 4, info: { id: 1, profile: null } },
+];
+const r = Arr.distinct(data, ["id", "info.id"]);
+
+//	[
+//	    { name: "abena", id: 10, size: 1, info: { id: 1, profile: null } },
+//	    { name: "ayoho", id: 1, size: 2, info: { id: 1, profile: null } },
+//	    { name: "ateba", id: 2, size: 3, info: { id: 1, profile: null } },
+//	]
+```
+
+
 
 ## Strings & Numbers
 

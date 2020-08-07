@@ -320,8 +320,8 @@ describe("Obj.mergeNested", function () {
     const obj2 = {
       name: "manuella",
       info: {
-        middle_name: "travas"
-      }
+        middle_name: "travas",
+      },
     };
 
     equal(
@@ -338,5 +338,35 @@ describe("Obj.mergeNested", function () {
         },
       })
     );
+  });
+});
+
+/**
+ * Obj.clean
+ */
+describe("Obj.clean", function () {
+  it("should remove all null properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+      };
+      const r = Obj.clean(data);
+      equal(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+    });
+  });
+
+  it("should remove all null and undefined properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+        age: undefined,
+      };
+      const r = Obj.clean(data);
+      equal(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+    });
   });
 });
