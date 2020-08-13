@@ -309,9 +309,11 @@ const cityName = Obj.readNestedProperty(user, ["country", "city", "name"]);
 
 ```
 
-### Obj.merge
+### Obj.merge & Obj.mergeStrict
 
 The _Obj.merge_ method merges two objects by prioritizing either the attributes of the object on the left or the attributes of the object on the right.
+
+In *strict* mode, the target replace as soon as the key exists in the priority object.
 
 Method import
 
@@ -324,9 +326,11 @@ Method definition
 ```typescript
 // typescript
 function merge(left: any, right: any, priority?: "left" | "right"): any
+function mergeStrict(left: any, right: any, priority?: "left" | "right"): any
 
 // javascript
 function merge(left, right, priority);
+function mergeStrict(left, right, priority);
 ```
 
 Method parameters
@@ -340,25 +344,35 @@ Example
 ```typescript
 const obj = {
     id: 10,
-    name: "john",
+    name: undefined,
+    username: "matrix"
 };
 
 const obj2 = {
     name: "henry",
+    username: undefined
 };
 
 const merged = Obj.merge(obj, obj2);
-// { id: 10, name: "john" }
+// { id: 10, name: "henry", username: "matrix" }
+
+const mergedStrict = Obj.mergeStrict(obj, obj2);
+// { id: 10, username: "matrix" }
 
 const mergedWithRightPriority = Obj.merge(obj, obj2, "right");
+// { id: 10, name: "henry", username: "matrix" }
+
+const mergedWithRightPriorityStrict = Obj.mergeStrict(obj, obj2, "right");
 // { id: 10, name: "henry" }
 ```
 
 
 
-### Obj.mergeNested
+### Obj.mergeNested & Obj.mergeNestedStrict
 
 The _Obj.mergeNested_ method merges two objects with nested properties by prioritizing either the attributes of the object on the left or the attributes of the object on the right.
+
+In *strict* mode, the target replace as soon as the key exists in the priority object.
 
 Method import
 
@@ -371,9 +385,11 @@ Method definition
 ```typescript
 // typescript
 function mergeNested(params: {left: any, right: any, priority?: "left" | "right", separator?: string}): any
+function mergeNestedStrict(params: {left: any, right: any, priority?: "left" | "right", separator?: string}): any
 
 // javascript
 function mergeNested({left, right, priority, separator});
+function mergeNestedStrict({left, right, priority, separator});
 ```
 
 Method parameters
@@ -388,7 +404,7 @@ Example
 ```typescript
 const obj = {
     id: 10,
-    name: "john",
+    name: undefined,
 	info: {
 		first_name: "john",
     },
@@ -397,15 +413,21 @@ const obj = {
 const obj2 = {
     name: "henry",
     info: {
+        first_name: undefined
         last_name: "doe",
     }
 };
 
 const merged = Obj.mergeNested(obj, obj2);
-// { id: 10, name: "john", info: { first_name: "john", last_name: "doe"} }
+// { id: 10, name: "henry", info: { first_name: "john", last_name: "doe"} }
+const mergedStrict = Obj.mergeNestedStrict(obj, obj2);
+// { id: 10, info: { first_name: "john", last_name: "doe"} }
 
 const mergedWithRightPriority = Obj.merge(obj, obj2, "right");
 // { id: 10, name: "henry", info: { first_name: "john", last_name: "doe"} }
+
+const mergedWithRightPriorityStrict = Obj.mergeStrict(obj, obj2, "right");
+// { id: 10, name: "henry", info: { last_name: "doe"} }
 ```
 
 
@@ -610,6 +632,43 @@ const r = Obj.clean(data);
 
 
 ## Arrays
+
+### Arr.apply
+
+The _Arr.apply_ method apply some filters to the given array. 
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition  (Typescript)
+
+```typescript
+function Arr.apply<T>(array: T[], filters: ((item: T) => any) | ((item: T) => any)[]): T[]
+```
+
+Method definition  (JavaScript)
+
+```typescript
+function Arr.apply(array, filters)
+```
+
+Method parameters
+
+- **array**: array of string
+- **filters**: method or array of methods
+
+Examples
+
+```typescript
+const r = Arr.apply(["10", "20"], (value) => Number(value));
+// [10, 20]
+
+const r = Arr.apply(["a", "b"], (value) => `(${value})`);
+// ["(a)", "(b)"]
+```
 
 ### Arr.includes
 

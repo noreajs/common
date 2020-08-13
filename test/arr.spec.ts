@@ -110,3 +110,21 @@ describe("Arr.distinct", function () {
     );
   });
 });
+
+/**
+ * Arr.apply
+ */
+describe("Arr.apply", function () {
+  it("should return an array of number", function () {
+    equal(
+      JSON.stringify(Arr.apply(["10", "20"], (value) => Number(value))),
+      JSON.stringify([10, 20])
+    );
+  });
+  it("should return an array with each item in bracket", function () {
+    equal(
+      JSON.stringify(Arr.apply(["a", "b"], (value) => `(${value})`)),
+      JSON.stringify(["(a)", "(b)"])
+    );
+  });
+});

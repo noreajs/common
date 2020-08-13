@@ -272,6 +272,43 @@ describe("Obj.merge", function () {
 });
 
 /**
+ * Obj.mergeStrict
+ */
+describe("Obj.mergeStrict", function () {
+  it("should merge the two objects with priority left", function () {
+    const obj = {
+      id: 10,
+      name: undefined,
+    };
+
+    const obj2 = {
+      name: "henry",
+    };
+
+    equal(
+      JSON.stringify(Obj.mergeStrict(obj, obj2)),
+      JSON.stringify({ id: 10 })
+    );
+  });
+
+  it("should merge the two objects with priority right", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+    };
+
+    const obj2 = {
+      name: undefined,
+    };
+
+    equal(
+      JSON.stringify(Obj.mergeStrict(obj, obj2, "right")),
+      JSON.stringify({ id: 10 })
+    );
+  });
+});
+
+/**
  * Obj.mergeNested
  */
 describe("Obj.mergeNested", function () {
@@ -335,6 +372,74 @@ describe("Obj.mergeNested", function () {
           first_name: "john",
           last_name: "doe",
           middle_name: "travas",
+        },
+      })
+    );
+  });
+});
+
+/**
+ * Obj.mergeNestedStrict
+ */
+describe("Obj.mergeNestedStrict", function () {
+  it("should merge the two objects with nested properties and left priority", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+      info: {
+        first_name: "john",
+        last_name: undefined,
+      },
+    };
+
+    const obj2 = {
+      name: "henry",
+      info: {
+        middle_name: "hannah",
+      },
+    };
+
+    equal(
+      JSON.stringify(Obj.mergeNestedStrict({ left: obj, right: obj2 })),
+      JSON.stringify({
+        id: 10,
+        name: "john",
+        info: {
+          first_name: "john",
+          middle_name: "hannah",
+        },
+      })
+    );
+  });
+
+  it("should merge the two objects with nested properties and right priority", function () {
+    const obj = {
+      id: 10,
+      name: "john",
+      info: {
+        first_name: "john",
+        last_name: "doe",
+        middle_name: "hannah",
+      },
+    };
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: undefined,
+      },
+    };
+
+    equal(
+      JSON.stringify(
+        Obj.mergeNestedStrict({ left: obj, right: obj2, priority: "right" })
+      ),
+      JSON.stringify({
+        id: 10,
+        name: "manuella",
+        info: {
+          first_name: "john",
+          last_name: "doe",
         },
       })
     );

@@ -176,6 +176,28 @@ class Arr {
       }
     }
   }
+
+  /**
+   * Apply filters to the given array's items
+   * @param array array
+   * @param filters filters
+   */
+  static apply<T>(
+    array: T[],
+    filters: ((item: T) => any) | ((item: T) => any)[]
+  ) {
+    if (!Array.isArray(filters)) {
+      filters = [filters];
+    }
+  
+    for (let index = 0; index < array.length; index++) {
+      for (const filter of filters) {
+        array[index] = filter(array[index]);
+      }
+    }
+  
+    return array;
+  }
 }
 
 export default Arr;

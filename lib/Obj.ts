@@ -102,7 +102,7 @@ class Obj {
      * Filter to be applied to values
      */
     filters?: {
-      [key: string]: Array<(value: any) => any>;
+      [key: string]: ((value: any) => any) | Array<(value: any) => any>;
     };
 
     /**
@@ -144,7 +144,13 @@ class Obj {
             (item) => item === key
           );
           if (filterKey) {
-            for (const filter of params.filters[filterKey]) {
+            let filterList = params.filters[filterKey];
+
+            if (!Array.isArray(filterList)) {
+              filterList = [filterList];
+            }
+
+            for (const filter of filterList) {
               value = filter(value);
             }
           }
@@ -343,6 +349,45 @@ class Obj {
   }
 
   /**
+   * Merge two objects; it replace as soon as the key exists in the priority object
+   * @param left left object
+   * @param right right object
+   * @param priority left or right
+   */
+  static mergeStrict(
+    left: any,
+    right: any,
+    priority: "left" | "right" = "left"
+  ) {
+    const mergedKeys: string[] = [];
+
+    for (const key of [...Object.keys(left), ...Object.keys(right)]) {
+      if (!mergedKeys.includes(key)) {
+        mergedKeys.push(key);
+      }
+    }
+
+    const merged: any = {};
+
+    for (const key of mergedKeys) {
+      switch (priority) {
+        case "left":
+          merged[key] = Object.prototype.hasOwnProperty.call(left, key)
+            ? left[key]
+            : right[key];
+          break;
+        case "right":
+          merged[key] = Object.prototype.hasOwnProperty.call(right, key)
+            ? right[key]
+            : left[key];
+          break;
+      }
+    }
+
+    return merged;
+  }
+
+  /**
    * Merge object with nested properties
    * @param params parameters
    */
@@ -391,6 +436,72 @@ class Obj {
           break;
         case "right":
           merged[key] = rightFlattened[key] ?? leftFlattened[key];
+          break;
+      }
+    }
+
+    return Obj.reverseFlatten({
+      flattened: merged,
+      separator,
+    });
+  }
+
+  /**
+   * Merge object with nested properties; the target replace as soon as the key exists in the priority object
+   * @param params parameters
+   */
+  static mergeNestedStrict(params: {
+    /**
+     * Left object
+     */
+    left: any;
+
+    /**
+     * Right object
+     */
+    right: any;
+
+    /**
+     * Merge priority
+     */
+    priority?: "left" | "right";
+
+    /**
+     * Separator to flatten objects
+     */
+    separator?: string;
+  }) {
+    const priority = params.priority ?? "left";
+    const separator = params.separator ?? "----";
+    const mergedKeys: string[] = [];
+    const leftFlattened = Obj.flatten({ data: params.left, separator });
+    const rightFlattened = Obj.flatten({ data: params.right, separator });
+
+    for (const key of [
+      ...Object.keys(leftFlattened),
+      ...Object.keys(rightFlattened),
+    ]) {
+      if (!mergedKeys.includes(key)) {
+        mergedKeys.push(key);
+      }
+    }
+
+    const merged: any = {};
+
+    for (const key of mergedKeys) {
+      switch (priority) {
+        case "left":
+          merged[key] = Object.prototype.hasOwnProperty.call(leftFlattened, key)
+            ? leftFlattened[key]
+            : rightFlattened[key];
+          break;
+        case "right":
+          merged[key] = Object.prototype.hasOwnProperty.call(
+            rightFlattened,
+            key
+          )
+            ? rightFlattened[key]
+            : leftFlattened[key];
           break;
       }
     }
