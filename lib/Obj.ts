@@ -49,7 +49,11 @@ class Obj {
     const r: K[] = [];
     for (const attr of keys) {
       const element = (target as any)[attr];
-      if (!element || (typeof element === "string" && element.length === 0)) {
+      if (
+        element === null ||
+        element === undefined ||
+        (typeof element === "string" && element.length === 0)
+      ) {
         r.push(attr);
       }
     }
