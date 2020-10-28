@@ -631,6 +631,60 @@ const r = Obj.clean(data);
 
 
 
+### Obj.cleanWithEmpty
+
+The _Obj.clean_ method remove null, undefined or empty string properties in an object.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition (Typescript)
+
+```typescript
+function cleanWithEmpty(obj: any, separator?: string | RegExp): any
+```
+
+Method definition (JavaScript)
+
+```typescript
+function cleanWithEmpty(obj, separator): any
+```
+
+Method parameters
+
+- **obj**: object
+- **separator**: separator for nested properties
+
+Example
+
+```typescript
+const data = {
+    id: 10,
+    name: "amina",
+    size: null,
+    lambou: ""
+};
+const r = Obj.cleanWithEmpty(data);
+
+// { id: 10, name: "amina" }
+
+const data = {
+    id: 10,
+    name: "amina",
+    size: null,
+    age: undefined,
+    arnold: ''
+};
+const r = Obj.cleanWithEmpty(data);
+
+// { id: 10, name: "amina" }
+```
+
+
+
 ## Arrays
 
 ### Arr.apply

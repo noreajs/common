@@ -527,7 +527,31 @@ class Obj {
     for (const key in flattened) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         const element = obj[key];
-        if (element) {
+        if (element !== null && element !== undefined) {
+          Obj.assignNestedProperty(r, key.split(separator), element);
+        }
+      }
+    }
+    return r;
+  }
+
+  /**
+   * Remove null or undefined properties in an object
+   * @param obj object to clean
+   * @param separator separator for nested properties
+   */
+  static cleanWithEmpty(obj: any, separator: string | RegExp = ".") {
+    const r: any = {};
+    const flattened = Obj.flatten({ data: obj, separator: separator });
+    for (const key in flattened) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const element = obj[key];
+        if (
+          (element !== null &&
+            element !== undefined &&
+            typeof element !== "string") ||
+          (typeof element === "string" && element.length !== 0)
+        ) {
           Obj.assignNestedProperty(r, key.split(separator), element);
         }
       }

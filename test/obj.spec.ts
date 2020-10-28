@@ -1,5 +1,5 @@
 import Obj from "../lib/Obj";
-import { equal, doesNotThrow } from "assert";
+import { equal, doesNotThrow, strictEqual } from "assert";
 import Arr from "../lib/Arr";
 
 /**
@@ -10,7 +10,7 @@ describe("Obj.assignNestedProperty", function () {
     doesNotThrow(function () {
       const data: any = {};
       Obj.assignNestedProperty(data, ["level1", "level2"], 100);
-      equal(data.level1.level2, 100);
+      strictEqual(data.level1.level2, 100);
     });
   });
 });
@@ -27,7 +27,7 @@ describe("Obj.readNestedProperty", function () {
         },
       };
       Obj.readNestedProperty(data, ["level1", "level2"]);
-      equal(data.level1.level2, 100);
+      strictEqual(data.level1.level2, 100);
     });
   });
 });
@@ -38,7 +38,7 @@ describe("Obj.readNestedProperty", function () {
 describe("Obj.missingKeys", function () {
   it("should return uninitialized attributes list", function () {
     const r = Obj.missingKeys(["a", "b", "c"], { a: "filled" });
-    equal(JSON.stringify(r), JSON.stringify(["b", "c"]));
+    strictEqual(JSON.stringify(r), JSON.stringify(["b", "c"]));
   });
 });
 
@@ -60,8 +60,8 @@ describe("Obj.pluck", function () {
       ],
       "id"
     );
-    equal(Arr.missing(r, [1, 2]).length, 0);
-    equal(JSON.stringify(r), JSON.stringify([1, 2]));
+    strictEqual(Arr.missing(r, [1, 2]).length, 0);
+    strictEqual(JSON.stringify(r), JSON.stringify([1, 2]));
   });
 });
 
@@ -91,7 +91,7 @@ describe("Obj.pluckNested", function () {
       ],
       "subInfo.birthplace"
     );
-    equal(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
+    strictEqual(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
   });
 
   it("should return the list of extracted nested property values (array notation)", function () {
@@ -116,7 +116,7 @@ describe("Obj.pluckNested", function () {
       ],
       ["subInfo", "birthplace"]
     );
-    equal(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
+    strictEqual(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
   });
 });
 
@@ -146,7 +146,7 @@ describe("Obj.extend", function () {
       omits: ["nickname"],
     });
 
-    equal(
+    strictEqual(
       JSON.stringify(extended),
       JSON.stringify({ "the.name": "Hello Arnold!" })
     );
@@ -178,7 +178,7 @@ describe("Obj.flatten", function () {
       omits: ["boss"],
     });
 
-    equal(
+    strictEqual(
       JSON.stringify(flattened),
       JSON.stringify({ "hey.name.nickname.in.the.hood.man": "Yes" })
     );
@@ -199,7 +199,7 @@ describe("Obj.reverseFlatten", function () {
       omits: ["boss"],
     });
 
-    equal(
+    strictEqual(
       JSON.stringify(data),
       JSON.stringify({
         name: {
@@ -221,16 +221,16 @@ describe("Obj.reverseFlatten", function () {
  */
 describe("Obj.isObject", function () {
   it("should return false when given value equal to undefined", function () {
-    equal(Obj.isObject(undefined), false);
+    strictEqual(Obj.isObject(undefined), false);
   });
   it("should return false when given value equal to null", function () {
-    equal(Obj.isObject(null), false);
+    strictEqual(Obj.isObject(null), false);
   });
   it("should return false when given value is an array", function () {
-    equal(Obj.isObject([]), false);
+    strictEqual(Obj.isObject([]), false);
   });
   it("should return true when given value is an object", function () {
-    equal(Obj.isObject({}), true);
+    strictEqual(Obj.isObject({}), true);
   });
 });
 
@@ -248,7 +248,7 @@ describe("Obj.merge", function () {
       name: "henry",
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.merge(obj, obj2)),
       JSON.stringify({ id: 10, name: "john" })
     );
@@ -264,7 +264,7 @@ describe("Obj.merge", function () {
       name: "henry",
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.merge(obj, obj2, "right")),
       JSON.stringify({ id: 10, name: "henry" })
     );
@@ -285,7 +285,7 @@ describe("Obj.mergeStrict", function () {
       name: "henry",
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.mergeStrict(obj, obj2)),
       JSON.stringify({ id: 10 })
     );
@@ -301,7 +301,7 @@ describe("Obj.mergeStrict", function () {
       name: undefined,
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.mergeStrict(obj, obj2, "right")),
       JSON.stringify({ id: 10 })
     );
@@ -329,7 +329,7 @@ describe("Obj.mergeNested", function () {
       },
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.mergeNested({ left: obj, right: obj2 })),
       JSON.stringify({
         id: 10,
@@ -361,7 +361,7 @@ describe("Obj.mergeNested", function () {
       },
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(
         Obj.mergeNested({ left: obj, right: obj2, priority: "right" })
       ),
@@ -399,7 +399,7 @@ describe("Obj.mergeNestedStrict", function () {
       },
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(Obj.mergeNestedStrict({ left: obj, right: obj2 })),
       JSON.stringify({
         id: 10,
@@ -430,7 +430,7 @@ describe("Obj.mergeNestedStrict", function () {
       },
     };
 
-    equal(
+    strictEqual(
       JSON.stringify(
         Obj.mergeNestedStrict({ left: obj, right: obj2, priority: "right" })
       ),
@@ -458,7 +458,7 @@ describe("Obj.clean", function () {
         size: null,
       };
       const r = Obj.clean(data);
-      equal(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
     });
   });
 
@@ -471,7 +471,39 @@ describe("Obj.clean", function () {
         age: undefined,
       };
       const r = Obj.clean(data);
-      equal(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+    });
+  });
+});
+
+/**
+ * Obj.cleanWithEmpty
+ */
+describe("Obj.cleanWithEmpty", function () {
+  it("should remove all null properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+        lambou: ""
+      };
+      const r = Obj.cleanWithEmpty(data);
+      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+    });
+  });
+
+  it("should remove all null and undefined properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+        age: undefined,
+        arnold: ''
+      };
+      const r = Obj.cleanWithEmpty(data);
+      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
     });
   });
 });
