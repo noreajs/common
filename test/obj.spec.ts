@@ -468,10 +468,21 @@ describe("Obj.clean", function () {
         id: 10,
         name: "amina",
         size: null,
-        age: undefined,
+        age: {
+          $exists: false,
+        },
       };
       const r = Obj.clean(data);
-      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
+          id: 10,
+          name: "amina",
+          age: {
+            $exists: false,
+          },
+        })
+      );
     });
   });
 });
@@ -486,10 +497,22 @@ describe("Obj.cleanWithEmpty", function () {
         id: 10,
         name: "amina",
         size: null,
-        lambou: ""
+        age: {
+          $exists: false,
+        },
+        lambou: "",
       };
       const r = Obj.cleanWithEmpty(data);
-      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
+          id: 10,
+          name: "amina",
+          age: {
+            $exists: false,
+          },
+        })
+      );
     });
   });
 
@@ -500,7 +523,7 @@ describe("Obj.cleanWithEmpty", function () {
         name: "amina",
         size: null,
         age: undefined,
-        arnold: ''
+        arnold: "",
       };
       const r = Obj.cleanWithEmpty(data);
       strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));

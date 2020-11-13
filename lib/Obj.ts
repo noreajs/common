@@ -525,8 +525,8 @@ class Obj {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
     for (const key in flattened) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const element = obj[key];
+      if (Object.prototype.hasOwnProperty.call(flattened, key)) {
+        const element = flattened[key];
         if (element !== null && element !== undefined) {
           Obj.assignNestedProperty(r, key.split(separator), element);
         }
@@ -544,8 +544,8 @@ class Obj {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
     for (const key in flattened) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const element = obj[key];
+      if (Object.prototype.hasOwnProperty.call(flattened, key)) {
+        const element = flattened[key];
         if (
           (element !== null &&
             element !== undefined &&
