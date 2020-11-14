@@ -521,7 +521,7 @@ class Obj {
    * @param obj object to clean
    * @param separator separator for nested properties
    */
-  static clean(obj: any, separator: string | RegExp = ".") {
+  static clean(obj: any, separator: string | RegExp = ":-:-:") {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
     for (const key in flattened) {
@@ -540,7 +540,7 @@ class Obj {
    * @param obj object to clean
    * @param separator separator for nested properties
    */
-  static cleanWithEmpty(obj: any, separator: string | RegExp = ".") {
+  static cleanWithEmpty(obj: any, separator: string | RegExp = ":-:-:") {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
     for (const key in flattened) {

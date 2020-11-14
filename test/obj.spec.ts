@@ -499,6 +499,7 @@ describe("Obj.cleanWithEmpty", function () {
         size: null,
         age: {
           $exists: false,
+          "owner.user.id": 0,
         },
         lambou: "",
       };
@@ -510,6 +511,7 @@ describe("Obj.cleanWithEmpty", function () {
           name: "amina",
           age: {
             $exists: false,
+            "owner.user.id": 0,
           },
         })
       );
