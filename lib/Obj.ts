@@ -318,7 +318,13 @@ class Obj {
    * @param data object
    */
   static isObject(data: any) {
-    return !Array.isArray(data) && typeof data === "object" && data !== null;
+    const r =
+      data != null &&
+      data != undefined &&
+      !Array.isArray(data) &&
+      typeof data === "object" &&
+      data?.constructor === Object;
+    return r;
   }
 
   /**

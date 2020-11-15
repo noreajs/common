@@ -471,6 +471,9 @@ describe("Obj.clean", function () {
         age: {
           $exists: false,
         },
+        date: {
+          first: new Date(1950, 1, 1, 0, 0, 0, 0),
+        },
       };
       const r = Obj.clean(data);
       strictEqual(
@@ -480,6 +483,9 @@ describe("Obj.clean", function () {
           name: "amina",
           age: {
             $exists: false,
+          },
+          date: {
+            first: new Date(1950, 1, 1, 0, 0, 0, 0),
           },
         })
       );
