@@ -755,6 +755,44 @@ const r = Arr.includes(["a", "b"], "a");
 // true
 ```
 
+### Arr.join
+
+The _Arr.join_ method adds all the elements of an array separated by the specified glues string.
+
+Method import
+
+```typescript
+import { Arr } from "@noreajs/common";
+```
+
+Method definition  (Typescript)
+
+```typescript
+function Arr.apply<T = any>(array: T[], glue: string; lastGlue?: string): string
+```
+
+Method definition  (JavaScript)
+
+```typescript
+function Arr.apply(array, glue, lastGlue)
+```
+
+Method parameters
+
+- **array**: array of string
+- **glue**: separator for the elements except the last
+- **lastGlue**: separator for last element
+
+Examples
+
+```typescript
+const str = Arr.join(["John", "Doe"], " ");
+// John Doe
+
+const str = Arr.join(["John", "Jane", "Paul"], ", ", " and ");
+// John, Jane and Paul
+```
+
 ### Arr.missing
 
 The _Arr.missing_ method returns items in array **a** missing in array **b**. 

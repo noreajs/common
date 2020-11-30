@@ -189,14 +189,37 @@ class Arr {
     if (!Array.isArray(filters)) {
       filters = [filters];
     }
-  
+
     for (let index = 0; index < array.length; index++) {
       for (const filter of filters) {
         array[index] = filter(array[index]);
       }
     }
-  
+
     return array;
+  }
+
+  /**
+   * Join array items
+   * @param array array to join
+   * @param glue glue for items before the last
+   * @param lastGlue glue for the last item
+   */
+  static join<T = any>(array: T[], glue: string, lastGlue?: string) {
+    var finalGlue = lastGlue ?? glue;
+    if (array.length === 1) {
+      return array[0];
+    } else {
+      // add the first element
+      var str: any = array[0];
+      for (let index = 1; index < array.length - 1; index++) {
+        const element = array[index];
+        str = `${str}${glue}${element}`;
+      }
+      // add the last element
+      str = `${str}${finalGlue}${array[array.length - 1]}`;
+      return str;
+    }
   }
 }
 
