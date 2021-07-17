@@ -160,7 +160,7 @@ class Obj {
           }
         }
 
-        if (value) {
+        if (value !== null || value !== undefined) {
           // inject value
           data[`${keyRealPrefix}${key}${keyRealSuffix}`] = value;
         }

@@ -128,6 +128,7 @@ describe("Obj.extend", function () {
     const data = {
       name: "Arnold",
       nickname: "Mortel",
+      dead: false
     };
 
     const extended = Obj.extend({
@@ -148,7 +149,7 @@ describe("Obj.extend", function () {
 
     strictEqual(
       JSON.stringify(extended),
-      JSON.stringify({ "the.name": "Hello Arnold!" })
+      JSON.stringify({ "the.name": "Hello Arnold!", "the.dead": false })
     );
   });
 });
