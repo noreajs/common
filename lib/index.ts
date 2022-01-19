@@ -1,4 +1,3 @@
-export { default as HttpStatus } from "./HttpStatus";
 export {
   assignNestedProperty,
   extractLanguageTag,
