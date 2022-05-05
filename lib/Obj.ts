@@ -550,7 +550,7 @@ class Obj {
   static cleanWithEmpty(obj: any, separator: string | RegExp = ":-:-:") {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
-    console.log("flattened", flattened);
+    // console.log("flattened", flattened);
     for (const key in flattened) {
       if (Object.prototype.hasOwnProperty.call(flattened, key)) {
         const element = flattened[key];
