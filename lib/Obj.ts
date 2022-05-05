@@ -225,6 +225,7 @@ class Obj {
               data: element,
               prefix: `${realPrefix}${key}${separator}`,
               suffix: realSuffix,
+              separator: separator
             }),
           };
         } else {
@@ -549,6 +550,7 @@ class Obj {
   static cleanWithEmpty(obj: any, separator: string | RegExp = ":-:-:") {
     const r: any = {};
     const flattened = Obj.flatten({ data: obj, separator: separator });
+    console.log("flattened", flattened);
     for (const key in flattened) {
       if (Object.prototype.hasOwnProperty.call(flattened, key)) {
         const element = flattened[key];

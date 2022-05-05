@@ -128,7 +128,7 @@ describe("Obj.extend", function () {
     const data = {
       name: "Arnold",
       nickname: "Mortel",
-      dead: false
+      dead: false,
     };
 
     const extended = Obj.extend({
@@ -533,9 +533,34 @@ describe("Obj.cleanWithEmpty", function () {
         size: null,
         age: undefined,
         arnold: "",
+        obj: {
+          id: 10,
+          name: "amina",
+          size: null,
+          age: undefined,
+          arnold: "",
+          objc: {
+            id: 10,
+            name: "amina",
+            size: null,
+            age: undefined,
+            arnold: "",
+          },
+        },
       };
       const r = Obj.cleanWithEmpty(data);
-      strictEqual(JSON.stringify(r), JSON.stringify({ id: 10, name: "amina" }));
+      strictEqual(JSON.stringify(r), JSON.stringify({
+        id: 10,
+        name: "amina",
+        obj: {
+          id: 10,
+          name: "amina",
+          objc: {
+            id: 10,
+            name: "amina",
+          },
+        },
+      }));
     });
   });
 });
