@@ -1,5 +1,6 @@
-import { equal, strictEqual } from "assert";
+import { strictEqual } from "assert";
 import Arr from "../lib/Arr";
+
 
 /**
  * Arr.includes

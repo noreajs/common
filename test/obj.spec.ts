@@ -1,5 +1,5 @@
 import Obj from "../lib/Obj";
-import { equal, doesNotThrow, strictEqual } from "assert";
+import { doesNotThrow, strictEqual } from "assert";
 import Arr from "../lib/Arr";
 
 /**
@@ -549,18 +549,21 @@ describe("Obj.cleanWithEmpty", function () {
         },
       };
       const r = Obj.cleanWithEmpty(data);
-      strictEqual(JSON.stringify(r), JSON.stringify({
-        id: 10,
-        name: "amina",
-        obj: {
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
           id: 10,
           name: "amina",
-          objc: {
+          obj: {
             id: 10,
             name: "amina",
+            objc: {
+              id: 10,
+              name: "amina",
+            },
           },
-        },
-      }));
+        })
+      );
     });
   });
 });
