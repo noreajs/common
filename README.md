@@ -685,6 +685,55 @@ const r = Obj.cleanWithEmpty(data);
 
 
 
+### Obj.undefinedToNull
+
+The _Obj.undefinedToNull_ method turn all undefined properties of an object to null.
+
+Method import
+
+```typescript
+import { Obj } from "@noreajs/common";
+```
+
+Method definition (Typescript)
+
+```typescript
+function undefinedToNull(obj: any, separator?: string | RegExp): any
+```
+
+Method definition (JavaScript)
+
+```typescript
+function undefinedToNull(obj, separator): any
+```
+
+Method parameters
+
+- **obj**: object
+- **separator**: separator for nested properties
+
+Example
+
+```typescript
+const data = {
+    id: 10,
+    name: "amina",
+};
+const r = Obj.undefinedToNull(data);
+
+// { id: 10, name: "amina" }
+
+const data = {
+    size: null,
+    age: undefined,
+};
+const r = Obj.undefinedToNull(data);
+
+// { size: null, age: null }
+```
+
+
+
 ## Arrays
 
 ### Arr.apply

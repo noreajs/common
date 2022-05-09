@@ -225,7 +225,7 @@ class Obj {
               data: element,
               prefix: `${realPrefix}${key}${separator}`,
               suffix: realSuffix,
-              separator: separator
+              separator: separator,
             }),
           };
         } else {
@@ -560,6 +560,28 @@ class Obj {
             typeof element !== "string") ||
           (typeof element === "string" && element.length !== 0)
         ) {
+          Obj.assignNestedProperty(r, key.split(separator), element);
+        }
+      }
+    }
+    return r;
+  }
+
+  /**
+   * Turn undefined to null properties in an object
+   * @param obj object to clean
+   * @param separator separator for nested properties
+   */
+  static undefinedToNull(obj: any, separator: string | RegExp = ":-:-:") {
+    const r: any = {};
+    const flattened = Obj.flatten({ data: obj, separator: separator });
+    // console.log("flattened", flattened);
+    for (const key in flattened) {
+      if (Object.prototype.hasOwnProperty.call(flattened, key)) {
+        const element = flattened[key];
+        if (element === undefined) {
+          Obj.assignNestedProperty(r, key.split(separator), null);
+        } else {
           Obj.assignNestedProperty(r, key.split(separator), element);
         }
       }

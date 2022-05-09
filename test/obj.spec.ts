@@ -567,3 +567,37 @@ describe("Obj.cleanWithEmpty", function () {
     });
   });
 });
+
+/**
+ * Obj.undefinedToNull
+ */
+describe("Obj.undefinedToNull", function () {
+  it("should turn all undefined properties to null", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: undefined,
+        name: "amina",
+        size: null,
+        age: {
+          $exists: undefined,
+          "owner.user.id": undefined,
+        },
+        lambou: "",
+      };
+      const r = Obj.undefinedToNull(data);
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
+          id: null,
+          name: "amina",
+          size: null,
+          age: {
+            $exists: null,
+            "owner.user.id": null,
+          },
+          lambou: "",
+        })
+      );
+    });
+  });
+});
