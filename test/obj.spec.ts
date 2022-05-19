@@ -583,6 +583,15 @@ describe("Obj.undefinedToNull", function () {
           "owner.user.id": undefined,
         },
         lambou: "",
+        obj: {},
+        nested: {
+          nes: {
+            n: {},
+          },
+          plu: {
+            m: undefined,
+          },
+        },
       };
       const r = Obj.undefinedToNull(data);
       strictEqual(
@@ -596,6 +605,15 @@ describe("Obj.undefinedToNull", function () {
             "owner.user.id": null,
           },
           lambou: "",
+          obj: {},
+          nested: {
+            nes: {
+              n: {},
+            },
+            plu: {
+              m: null,
+            },
+          },
         })
       );
     });

@@ -219,15 +219,19 @@ class Obj {
       if (params.data.hasOwnProperty(key)) {
         const element = (params.data as any)[key];
         if (Obj.isObject(element)) {
-          result = {
-            ...result,
-            ...Obj.flatten({
-              data: element,
-              prefix: `${realPrefix}${key}${separator}`,
-              suffix: realSuffix,
-              separator: separator,
-            }),
-          };
+          if (Object.keys(element).length !== 0) {
+            result = {
+              ...result,
+              ...Obj.flatten({
+                data: element,
+                prefix: `${realPrefix}${key}${separator}`,
+                suffix: realSuffix,
+                separator: separator,
+              }),
+            };
+          } else {
+            result[`${realPrefix}${key}`] = element;
+          }
         } else {
           const newKey = `${realPrefix}${key}${realSuffix}`;
           if (
