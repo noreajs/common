@@ -572,6 +572,32 @@ class Obj {
   }
 
   /**
+   * Remove null, undefined, false, empty string and empty array properties in an object
+   * @param obj object to clean
+   * @param separator separator for nested properties
+   */
+  static cleanAll(obj: any, separator: string | RegExp = ":-:-:") {
+    const r: any = {};
+    const flattened = Obj.flatten({ data: obj, separator: separator });
+    // console.log("flattened", flattened);
+    for (const key in flattened) {
+      if (Object.prototype.hasOwnProperty.call(flattened, key)) {
+        const element = flattened[key];
+        if (element !== null &&
+          element !== undefined &&
+          (typeof element !== "string" || element.length !== 0) &&
+          (typeof element !== "boolean" || element === true) &&
+          (!Array.isArray(element) || element.length !== 0) &&
+          (typeof element !== "object" || Object.keys(element).length !== 0)
+        ) {
+          Obj.assignNestedProperty(r, key.split(separator), element);
+        }
+      }
+    }
+    return r;
+  }
+
+  /**
    * Turn undefined to null properties in an object
    * @param obj object to clean
    * @param separator separator for nested properties

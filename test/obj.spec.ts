@@ -569,6 +569,82 @@ describe("Obj.cleanWithEmpty", function () {
 });
 
 /**
+ * Obj.cleanAll
+ */
+describe("Obj.cleanAll", function () {
+  it("should remove all null, undefined, false and empty array properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+        age: {
+          $exists: false,
+          "owner.user.id": 0,
+        },
+        arr: ["hello"],
+        emptyArr: [],
+        lambou: "",
+      };
+      const r = Obj.cleanAll(data);
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
+          id: 10,
+          name: "amina",
+          age: {
+            "owner.user.id": 0,
+          },
+          arr: ["hello"],
+        })
+      );
+    });
+  });
+
+  it("should remove all null and undefined properties", function () {
+    doesNotThrow(function () {
+      const data = {
+        id: 10,
+        name: "amina",
+        size: null,
+        age: undefined,
+        arnold: "",
+        obj: {
+          id: 10,
+          name: "amina",
+          size: null,
+          age: undefined,
+          arnold: "",
+          objc: {
+            id: 10,
+            name: "amina",
+            size: null,
+            age: undefined,
+            arnold: "",
+          },
+        },
+      };
+      const r = Obj.cleanWithEmpty(data);
+      strictEqual(
+        JSON.stringify(r),
+        JSON.stringify({
+          id: 10,
+          name: "amina",
+          obj: {
+            id: 10,
+            name: "amina",
+            objc: {
+              id: 10,
+              name: "amina",
+            },
+          },
+        })
+      );
+    });
+  });
+});
+
+/**
  * Obj.undefinedToNull
  */
 describe("Obj.undefinedToNull", function () {
