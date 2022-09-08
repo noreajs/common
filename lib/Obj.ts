@@ -137,7 +137,7 @@ class Obj {
         continue;
       }
 
-      if (params.data.hasOwnProperty(key)) {
+      if (Object.hasOwnProperty.bind(params.data)(key)) {
         let value = params.data[key];
 
         /**
@@ -216,7 +216,7 @@ class Obj {
     let realSuffix = params.suffix ?? "";
     let result: any = {};
     for (const key in params.data) {
-      if (params.data.hasOwnProperty(key)) {
+      if (Object.hasOwnProperty.bind(params.data)(key)) {
         const element = (params.data as any)[key];
         if (Obj.isObject(element)) {
           if (Object.keys(element).length !== 0) {
@@ -284,7 +284,7 @@ class Obj {
 
     for (const key in params.flattened) {
       if (
-        params.flattened.hasOwnProperty(key) &&
+        Object.hasOwnProperty.bind(params.flattened)(key) &&
         (!params.omits || !params.omits.includes(key))
       ) {
         // initialize original key
