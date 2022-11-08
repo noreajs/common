@@ -6,7 +6,7 @@ import Arr from "../lib/Arr";
  * Obj.assignNestedProperty
  */
 describe("Obj.assignNestedProperty", function () {
-  it("should assign nested property", function () {
+  it.only("should assign nested property", function () {
     doesNotThrow(function () {
       const data: any = {};
       Obj.assignNestedProperty(data, ["level1", "level2"], 100);
@@ -19,7 +19,7 @@ describe("Obj.assignNestedProperty", function () {
  * Obj.readNestedProperty
  */
 describe("Obj.readNestedProperty", function () {
-  it("should read nested property", function () {
+  it.only("should read nested property", function () {
     doesNotThrow(function () {
       const data: any = {
         level1: {
@@ -36,7 +36,7 @@ describe("Obj.readNestedProperty", function () {
  * Obj.missingKeys
  */
 describe("Obj.missingKeys", function () {
-  it("should return uninitialized attributes list", function () {
+  it.only("should return uninitialized attributes list", function () {
     const r = Obj.missingKeys(["a", "b", "c"], { a: "filled" });
     strictEqual(JSON.stringify(r), JSON.stringify(["b", "c"]));
   });
@@ -46,7 +46,7 @@ describe("Obj.missingKeys", function () {
  * Obj.pluck
  */
 describe("Obj.pluck", function () {
-  it("should return the list of extracted property values", function () {
+  it.only("should return the list of extracted property values", function () {
     const r = Obj.pluck(
       [
         {
@@ -69,7 +69,7 @@ describe("Obj.pluck", function () {
  * Obj.pluckNested
  */
 describe("Obj.pluckNested", function () {
-  it("should return the list of extracted nested property values (dot notation)", function () {
+  it.only("should return the list of extracted nested property values (dot notation)", function () {
     const r = Obj.pluckNested(
       [
         {
@@ -94,7 +94,7 @@ describe("Obj.pluckNested", function () {
     strictEqual(Arr.missing(r, ["Paris", "Monaco"]).length, 0);
   });
 
-  it("should return the list of extracted nested property values (array notation)", function () {
+  it.only("should return the list of extracted nested property values (array notation)", function () {
     const r = Obj.pluckNested(
       [
         {
@@ -124,7 +124,7 @@ describe("Obj.pluckNested", function () {
  * Obj.extend
  */
 describe("Obj.extend", function () {
-  it("should return an object with custom prefix on key", function () {
+  it.only("should return an object with custom prefix on key", function () {
     const data = {
       name: "Arnold",
       nickname: "Mortel",
@@ -158,7 +158,7 @@ describe("Obj.extend", function () {
  * Obj.flatten
  */
 describe("Obj.flatten", function () {
-  it("should return an object with flatten key", function () {
+  it.only("should return an object with flatten key", function () {
     const data = {
       boss: "Big Playa",
       name: {
@@ -190,7 +190,7 @@ describe("Obj.flatten", function () {
  * Obj.flatten
  */
 describe("Obj.reverseFlatten", function () {
-  it("should reverse flatten on an object", function () {
+  it.only("should reverse flatten on an object", function () {
     const flattened = { "hey.name.nickname.in.the.hood.man": "Yes" };
 
     const data = Obj.reverseFlatten({
@@ -221,16 +221,16 @@ describe("Obj.reverseFlatten", function () {
  * Obj.isObject
  */
 describe("Obj.isObject", function () {
-  it("should return false when given value equal to undefined", function () {
+  it.only("should return false when given value equal to undefined", function () {
     strictEqual(Obj.isObject(undefined), false);
   });
-  it("should return false when given value equal to null", function () {
+  it.only("should return false when given value equal to null", function () {
     strictEqual(Obj.isObject(null), false);
   });
-  it("should return false when given value is an array", function () {
+  it.only("should return false when given value is an array", function () {
     strictEqual(Obj.isObject([]), false);
   });
-  it("should return true when given value is an object", function () {
+  it.only("should return true when given value is an object", function () {
     strictEqual(Obj.isObject({}), true);
   });
 });
@@ -239,7 +239,7 @@ describe("Obj.isObject", function () {
  * Obj.merge
  */
 describe("Obj.merge", function () {
-  it("should merge the two objects with priority left", function () {
+  it.only("should merge the two objects with priority left", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -255,7 +255,7 @@ describe("Obj.merge", function () {
     );
   });
 
-  it("should merge the two objects with priority right", function () {
+  it.only("should merge the two objects with priority right", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -276,7 +276,7 @@ describe("Obj.merge", function () {
  * Obj.mergeStrict
  */
 describe("Obj.mergeStrict", function () {
-  it("should merge the two objects with priority left", function () {
+  it.only("should merge the two objects with priority left", function () {
     const obj = {
       id: 10,
       name: undefined,
@@ -292,7 +292,7 @@ describe("Obj.mergeStrict", function () {
     );
   });
 
-  it("should merge the two objects with priority right", function () {
+  it.only("should merge the two objects with priority right", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -313,7 +313,7 @@ describe("Obj.mergeStrict", function () {
  * Obj.mergeNested
  */
 describe("Obj.mergeNested", function () {
-  it("should merge the two objects with nested properties and left priority", function () {
+  it.only("should merge the two objects with nested properties and left priority", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -344,7 +344,7 @@ describe("Obj.mergeNested", function () {
     );
   });
 
-  it("should merge the two objects with nested properties and right priority", function () {
+  it.only("should merge the two objects with nested properties and right priority", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -378,13 +378,14 @@ describe("Obj.mergeNested", function () {
     );
   });
 
-  it("should merge an empty object and a filled one with right priority", function () {
+  it.only("should merge an empty object and a filled one with right priority", function () {
     const obj = {};
 
     const obj2 = {
       name: "manuella",
       info: {
         middle_name: "travas",
+        amount: null
       },
     };
 
@@ -396,12 +397,13 @@ describe("Obj.mergeNested", function () {
         name: "manuella",
         info: {
           middle_name: "travas",
+          amount: null
         },
       })
     );
   });
 
-  it("should merge an empty object and a filled one with left priority", function () {
+  it.only("should merge an empty object and a filled one with left priority", function () {
     const obj = {};
 
     const obj2 = {
@@ -424,7 +426,7 @@ describe("Obj.mergeNested", function () {
     );
   });
 
-  it("should merge a null value and a filled one with left priority", function () {
+  it.only("should merge a null value and a filled one with left priority", function () {
     const obj = null;
 
     const obj2 = {
@@ -447,7 +449,7 @@ describe("Obj.mergeNested", function () {
     );
   });
 
-  it("should merge a null value and a filled one with right priority", function () {
+  it.only("should merge a null value and a filled one with right priority", function () {
     const obj = null;
 
     const obj2 = {
@@ -475,7 +477,7 @@ describe("Obj.mergeNested", function () {
  * Obj.mergeNestedStrict
  */
 describe("Obj.mergeNestedStrict", function () {
-  it("should merge the two objects with nested properties and left priority", function () {
+  it.only("should merge the two objects with nested properties and left priority", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -505,7 +507,7 @@ describe("Obj.mergeNestedStrict", function () {
     );
   });
 
-  it("should merge the two objects with nested properties and right priority", function () {
+  it.only("should merge the two objects with nested properties and right priority", function () {
     const obj = {
       id: 10,
       name: "john",
@@ -543,7 +545,7 @@ describe("Obj.mergeNestedStrict", function () {
  * Obj.clean
  */
 describe("Obj.clean", function () {
-  it("should remove all null properties", function () {
+  it.only("should remove all null properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -555,7 +557,7 @@ describe("Obj.clean", function () {
     });
   });
 
-  it("should remove all null and undefined properties", function () {
+  it.only("should remove all null and undefined properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -590,7 +592,7 @@ describe("Obj.clean", function () {
  * Obj.cleanWithEmpty
  */
 describe("Obj.cleanWithEmpty", function () {
-  it("should remove all null properties", function () {
+  it.only("should remove all null properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -617,7 +619,7 @@ describe("Obj.cleanWithEmpty", function () {
     });
   });
 
-  it("should remove all null and undefined properties", function () {
+  it.only("should remove all null and undefined properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -664,7 +666,7 @@ describe("Obj.cleanWithEmpty", function () {
  * Obj.cleanAll
  */
 describe("Obj.cleanAll", function () {
-  it("should remove all null, undefined, false and empty array properties", function () {
+  it.only("should remove all null, undefined, false and empty array properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -693,7 +695,7 @@ describe("Obj.cleanAll", function () {
     });
   });
 
-  it("should remove all null and undefined properties", function () {
+  it.only("should remove all null and undefined properties", function () {
     doesNotThrow(function () {
       const data = {
         id: 10,
@@ -740,7 +742,7 @@ describe("Obj.cleanAll", function () {
  * Obj.undefinedToNull
  */
 describe("Obj.undefinedToNull", function () {
-  it("should turn all undefined properties to null", function () {
+  it.only("should turn all undefined properties to null", function () {
     doesNotThrow(function () {
       const data = {
         id: undefined,

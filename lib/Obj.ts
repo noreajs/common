@@ -1,3 +1,21 @@
+function firstValueOrNull(...args: any[]) {
+  let nullFound = false;
+  for (const item of args) {
+    if (typeof item !== "undefined" && item !== null) {
+      return item;
+    } else {
+      if (item === null) {
+        nullFound = true;
+      }
+    }
+  }
+  if (nullFound) {
+    return null;
+  } else {
+    return undefined;
+  }
+}
+
 class Obj {
   /**
    * Assign nested property in object
@@ -295,7 +313,7 @@ class Obj {
 
         // remove suffix if exist
         if (params.suffix) {
-          originalKey = originalKey.substr(
+          originalKey = originalKey.substring(
             0,
             key.length - params.suffix.length + 1
           );
@@ -356,10 +374,10 @@ class Obj {
     for (const key of mergedKeys) {
       switch (priority) {
         case "left":
-          merged[key] = leftData[key] ?? rightData[key];
+          merged[key] = firstValueOrNull(leftData[key], rightData[key]);
           break;
         case "right":
-          merged[key] = rightData[key] ?? leftData[key];
+          merged[key] = firstValueOrNull(rightData[key], leftData[key]);
           break;
       }
     }
@@ -434,7 +452,7 @@ class Obj {
   }) {
     const priority = params.priority ?? "left";
     const separator = params.separator ?? "----";
-    const mergedKeys: string[] = [];
+    const mergedKeys: { [key: string]: boolean } = {};
     const leftFlattened = Obj.flatten({ data: params.left ?? {}, separator });
     const rightFlattened = Obj.flatten({ data: params.right ?? {}, separator });
 
@@ -442,24 +460,22 @@ class Obj {
       ...Object.keys(leftFlattened),
       ...Object.keys(rightFlattened),
     ]) {
-      if (!mergedKeys.includes(key)) {
-        mergedKeys.push(key);
+      if (!mergedKeys[key]) {
+        mergedKeys[key] = true;
       }
     }
 
     const merged: any = {};
-
-    for (const key of mergedKeys) {
+    for (const key of Object.keys(mergedKeys)) {
       switch (priority) {
         case "left":
-          merged[key] = leftFlattened[key] ?? rightFlattened[key];
+          merged[key] = firstValueOrNull(leftFlattened[key], rightFlattened[key]);
           break;
         case "right":
-          merged[key] = rightFlattened[key] ?? leftFlattened[key];
+          merged[key] = firstValueOrNull(rightFlattened[key], leftFlattened[key]);
           break;
       }
     }
-
     return Obj.reverseFlatten({
       flattened: merged,
       separator,
