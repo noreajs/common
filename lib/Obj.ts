@@ -215,9 +215,11 @@ class Obj {
     let realPrefix = params.prefix ?? "";
     let realSuffix = params.suffix ?? "";
     let result: any = {};
-    for (const key in params.data) {
-      if (Object.hasOwnProperty.bind(params.data)(key)) {
-        const element = (params.data as any)[key];
+    let data: any = params.data ?? {};
+
+    for (const key in data) {
+      if (Object.hasOwnProperty.bind(data)(key)) {
+        const element = (data)[key];
         if (Obj.isObject(element)) {
           if (Object.keys(element).length !== 0) {
             result = {
@@ -281,10 +283,11 @@ class Obj {
   }) {
     const separator = params.separator ?? ".";
     const result: any = {};
+    const flattenedData: any = params.flattened ?? {};
 
-    for (const key in params.flattened) {
+    for (const key in flattenedData) {
       if (
-        Object.hasOwnProperty.bind(params.flattened)(key) &&
+        Object.hasOwnProperty.bind(flattenedData)(key) &&
         (!params.omits || !params.omits.includes(key))
       ) {
         // initialize original key
@@ -310,7 +313,7 @@ class Obj {
           Obj.assignNestedProperty(
             result,
             originalKey.split(separator),
-            (params.flattened as any)[key]
+            flattenedData[key]
           );
         }
       }
@@ -340,8 +343,9 @@ class Obj {
    */
   static merge(left: any, right: any, priority: "left" | "right" = "left") {
     const mergedKeys: string[] = [];
+    const leftData = left ?? {}, rightData = right ?? {};
 
-    for (const key of [...Object.keys(left), ...Object.keys(right)]) {
+    for (const key of [...Object.keys(leftData), ...Object.keys(rightData)]) {
       if (!mergedKeys.includes(key)) {
         mergedKeys.push(key);
       }
@@ -352,10 +356,10 @@ class Obj {
     for (const key of mergedKeys) {
       switch (priority) {
         case "left":
-          merged[key] = left[key] ?? right[key];
+          merged[key] = leftData[key] ?? rightData[key];
           break;
         case "right":
-          merged[key] = right[key] ?? left[key];
+          merged[key] = rightData[key] ?? leftData[key];
           break;
       }
     }
@@ -375,8 +379,9 @@ class Obj {
     priority: "left" | "right" = "left"
   ) {
     const mergedKeys: string[] = [];
+    const leftData: any = left ?? {}, rightData = right ?? {};
 
-    for (const key of [...Object.keys(left), ...Object.keys(right)]) {
+    for (const key of [...Object.keys(leftData), ...Object.keys(rightData)]) {
       if (!mergedKeys.includes(key)) {
         mergedKeys.push(key);
       }
@@ -387,14 +392,14 @@ class Obj {
     for (const key of mergedKeys) {
       switch (priority) {
         case "left":
-          merged[key] = Object.prototype.hasOwnProperty.call(left, key)
-            ? left[key]
-            : right[key];
+          merged[key] = Object.prototype.hasOwnProperty.call(leftData, key)
+            ? leftData[key]
+            : rightData[key];
           break;
         case "right":
-          merged[key] = Object.prototype.hasOwnProperty.call(right, key)
-            ? right[key]
-            : left[key];
+          merged[key] = Object.prototype.hasOwnProperty.call(rightData, key)
+            ? rightData[key]
+            : leftData[key];
           break;
       }
     }
@@ -430,8 +435,8 @@ class Obj {
     const priority = params.priority ?? "left";
     const separator = params.separator ?? "----";
     const mergedKeys: string[] = [];
-    const leftFlattened = Obj.flatten({ data: params.left, separator });
-    const rightFlattened = Obj.flatten({ data: params.right, separator });
+    const leftFlattened = Obj.flatten({ data: params.left ?? {}, separator });
+    const rightFlattened = Obj.flatten({ data: params.right ?? {}, separator });
 
     for (const key of [
       ...Object.keys(leftFlattened),
@@ -489,8 +494,8 @@ class Obj {
     const priority = params.priority ?? "left";
     const separator = params.separator ?? "----";
     const mergedKeys: string[] = [];
-    const leftFlattened = Obj.flatten({ data: params.left, separator });
-    const rightFlattened = Obj.flatten({ data: params.right, separator });
+    const leftFlattened = Obj.flatten({ data: params.left ?? {}, separator });
+    const rightFlattened = Obj.flatten({ data: params.right ?? {}, separator });
 
     for (const key of [
       ...Object.keys(leftFlattened),

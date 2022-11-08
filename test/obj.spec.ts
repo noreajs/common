@@ -377,6 +377,98 @@ describe("Obj.mergeNested", function () {
       })
     );
   });
+
+  it("should merge an empty object and a filled one with right priority", function () {
+    const obj = {};
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: "travas",
+      },
+    };
+
+    strictEqual(
+      JSON.stringify(
+        Obj.mergeNested({ left: obj, right: obj2, priority: "right" })
+      ),
+      JSON.stringify({
+        name: "manuella",
+        info: {
+          middle_name: "travas",
+        },
+      })
+    );
+  });
+
+  it("should merge an empty object and a filled one with left priority", function () {
+    const obj = {};
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: "travas",
+      },
+    };
+
+    strictEqual(
+      JSON.stringify(
+        Obj.mergeNested({ left: obj, right: obj2, priority: "left" })
+      ),
+      JSON.stringify({
+        name: "manuella",
+        info: {
+          middle_name: "travas",
+        },
+      })
+    );
+  });
+
+  it("should merge a null value and a filled one with left priority", function () {
+    const obj = null;
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: "travas",
+      },
+    };
+
+    strictEqual(
+      JSON.stringify(
+        Obj.mergeNested({ left: obj, right: obj2, priority: "left" })
+      ),
+      JSON.stringify({
+        name: "manuella",
+        info: {
+          middle_name: "travas",
+        },
+      })
+    );
+  });
+
+  it("should merge a null value and a filled one with right priority", function () {
+    const obj = null;
+
+    const obj2 = {
+      name: "manuella",
+      info: {
+        middle_name: "travas",
+      },
+    };
+
+    strictEqual(
+      JSON.stringify(
+        Obj.mergeNested({ left: obj, right: obj2, priority: "right" })
+      ),
+      JSON.stringify({
+        name: "manuella",
+        info: {
+          middle_name: "travas",
+        },
+      })
+    );
+  });
 });
 
 /**
