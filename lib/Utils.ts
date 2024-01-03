@@ -2,15 +2,15 @@
  * Get if the given value is null or undefined
  * @param value input
  */
-export const isFilled = (value: any) => {
+export function isFilled<T extends any = any>(value?: T | null): value is T {
   return value !== null && value !== undefined;
 };
 
 /**
- * Get if the given value is null or undefined and length > 0
+ * Get if the given value is not null or not undefined and length > 0
  * @param value input
  */
-export const isQueryParamFilled = (value: any) => {
+export function isQueryParamFilled<T extends any = any>(value?: T | null): value is T {
   return value !== null && value !== undefined && `${value}`.length !== 0;
 };
 
@@ -145,7 +145,7 @@ export const isLocaleValid = (locale?: string) => {
  * @param target object
  * @deprecated use Obj.missingKeys instead
  */
-export function checkRequiredKeys<T, K = keyof T>(attrs: K[], target: T): K[] {
+export function checkRequiredKeys<T, K extends keyof T>(attrs: K[], target: T): K[] {
   const r: K[] = [];
   for (const attr of attrs) {
     const element = (target as any)[attr];
